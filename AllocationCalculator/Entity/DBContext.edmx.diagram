@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="93585286583b499aa079f6e01648068f" Name="Diagram1" >
+        <EntityTypeShape EntityType="Title1AllocationModel.tblBasicAllocationPreviousYearsData" Width="3" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Title1AllocationModel.tblBasicAllocationSource" Width="3" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Title1AllocationModel.tblCharterSchool" Width="3" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="Title1AllocationModel.tblMapCharterSchooltoSD" Width="3" PointX="4.75" PointY="3.75" />
+        <EntityTypeShape EntityType="Title1AllocationModel.tblSchoolDistrict" Width="3" PointX="10.375" PointY="0.5" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

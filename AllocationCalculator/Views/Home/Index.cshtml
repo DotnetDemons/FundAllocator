@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-2">
+
+    </div>
+    <div class="col-md-8">
+        <h4>Fund Allocation</h4>
+        @using (Html.BeginForm("ImportExcel", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="form-group">
+                <label>sheet a</label>
+                <input type="file" id="FileUpload1" name="FileUpload1" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>sheet e</label>
+                <input type="file" id="FileUpload2" name="FileUpload2" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>sheet h</label>
+                <input type="file" id="FileUpload3" name="FileUpload3" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        }
+    </div>
+    <div class="col-md-2">
+
+    </div>
+</div>
