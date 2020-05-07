@@ -177,7 +177,8 @@ namespace AllocationCalculator.Controllers
                             {
                                 sourcesModel[j].TotalForumlaCount = double.Parse(dt.Rows[i][10].ToString());
                                 sourcesModel[j].POP517 = double.Parse(dt.Rows[i][11].ToString());
-                                sourcesModel[j].PercentageFormula = double.Parse(dt.Rows[i][12].ToString().Trim('%'));
+                                var percentageFormula = (double.Parse(dt.Rows[i][10].ToString()) / double.Parse(dt.Rows[i][11].ToString()))*100;
+                                sourcesModel[j].PercentageFormula = percentageFormula;
                                 break;
                             }
                         }
@@ -243,7 +244,8 @@ namespace AllocationCalculator.Controllers
             for (int i = 0; i < sourcesModels.Count; i++)
             {
                 var _leaid = sourcesModels[i].LEAID;
-                sourcesModels[i].AUN = mappingModels.Where(x => x.LEAID == _leaid).Select(x => x.AUN).FirstOrDefault();
+                var _aun = mappingModels.Where(x => x.LEAID == _leaid).Select(x => x.AUN).FirstOrDefault();
+                sourcesModels[i].AUN = _aun == 0 ? 999999999 : _aun;
             }
         }
         private void MapSchoolDistrictsAUN(ref List<SchoolDistrictsModel> districtsModels, List<AUNMappingModel> mappingModels)
@@ -251,7 +253,8 @@ namespace AllocationCalculator.Controllers
             for (int i = 0; i < districtsModels.Count; i++)
             {
                 var _leaid = districtsModels[i].LEAID;
-                districtsModels[i].AUN = mappingModels.Where(x => x.LEAID == _leaid).Select(x => x.AUN).FirstOrDefault();
+                var _aun = mappingModels.Where(x => x.LEAID == _leaid).Select(x => x.AUN).FirstOrDefault();
+                districtsModels[i].AUN = _aun == 0 ? 999999999 : _aun;
             }
         }
 
