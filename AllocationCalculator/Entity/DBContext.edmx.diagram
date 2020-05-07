@@ -4,12 +4,12 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="93585286583b499aa079f6e01648068f" Name="Diagram1" >
-        <EntityTypeShape EntityType="Title1AllocationModel.tblBasicAllocationPreviousYearsData" Width="3" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="Title1AllocationModel.tblBasicAllocationSource" Width="3" PointX="2.75" PointY="0.75" />
-        <EntityTypeShape EntityType="Title1AllocationModel.tblCharterSchool" Width="3" PointX="4.75" PointY="0.75" />
-        <EntityTypeShape EntityType="Title1AllocationModel.tblMapCharterSchooltoSD" Width="3" PointX="4.75" PointY="3.75" />
-        <EntityTypeShape EntityType="Title1AllocationModel.tblSchoolDistrict" Width="3" PointX="10.375" PointY="0.5" />
+      <Diagram DiagramId="c60c3212f7824f91bf00f8657ac46e94" Name="Diagram1">
+        <EntityTypeShape EntityType="Title1AllocationModel.tblBasicAllocationPreviousYearsData" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Title1AllocationModel.tblBasicAllocationSource" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Title1AllocationModel.tblCharterSchool" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Title1AllocationModel.tblMapCharterSchooltoSD" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Title1AllocationModel.tblSchoolDistrict" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

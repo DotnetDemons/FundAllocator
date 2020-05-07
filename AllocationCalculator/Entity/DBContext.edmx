@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Title1AllocationModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Title1AllocationModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="tblBasicAllocationPreviousYearsData">
           <Key>
             <PropertyRef Name="ID" />
@@ -85,23 +85,11 @@
           <EntitySet Name="tblMapCharterSchooltoSD" EntityType="Self.tblMapCharterSchooltoSD" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblSchoolDistrict" EntityType="Self.tblSchoolDistrict" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Title1AllocationModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityContainer Name="Title1AllocationEntities" annotation:LazyLoadingEnabled="true" >
-          <FunctionImport Name="BasicAllocation" ReturnType="Collection(Decimal)">
-          <Parameter Name="ProgramYear" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="ConcAllocation">
-          <Parameter Name="ProgramYear" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <EntitySet Name="tblBasicAllocationPreviousYearsDatas" EntityType="Title1AllocationModel.tblBasicAllocationPreviousYearsData" />
-          <EntitySet Name="tblBasicAllocationSources" EntityType="Title1AllocationModel.tblBasicAllocationSource" />
-          <EntitySet Name="tblCharterSchools" EntityType="Title1AllocationModel.tblCharterSchool" />
-          <EntitySet Name="tblMapCharterSchooltoSDs" EntityType="Title1AllocationModel.tblMapCharterSchooltoSD" />
-          <EntitySet Name="tblSchoolDistricts" EntityType="Title1AllocationModel.tblSchoolDistrict" />
-        </EntityContainer>
         <EntityType Name="tblBasicAllocationPreviousYearsData">
           <Key>
             <PropertyRef Name="ID" />
@@ -169,86 +157,99 @@
           <Property Name="AgencyName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
+        <EntityContainer Name="Title1AllocationEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblBasicAllocationPreviousYearsDatas" EntityType="Self.tblBasicAllocationPreviousYearsData" />
+          <EntitySet Name="tblBasicAllocationSources" EntityType="Self.tblBasicAllocationSource" />
+          <EntitySet Name="tblCharterSchools" EntityType="Self.tblCharterSchool" />
+          <EntitySet Name="tblMapCharterSchooltoSDs" EntityType="Self.tblMapCharterSchooltoSD" />
+          <EntitySet Name="tblSchoolDistricts" EntityType="Self.tblSchoolDistrict" />
+          <FunctionImport Name="BasicAllocation" ReturnType="Collection(Decimal)">
+            <Parameter Name="ProgramYear" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ConcAllocation">
+            <Parameter Name="ProgramYear" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Title1AllocationModelStoreContainer" CdmEntityContainer="Title1AllocationEntities" >
-          <FunctionImportMapping FunctionImportName="BasicAllocation" FunctionName="Title1AllocationModel.Store.BasicAllocation" />
-          <FunctionImportMapping FunctionImportName="ConcAllocation" FunctionName="Title1AllocationModel.Store.ConcAllocation" />
+        <EntityContainerMapping StorageEntityContainer="Title1AllocationModelStoreContainer" CdmEntityContainer="Title1AllocationEntities">
           <EntitySetMapping Name="tblBasicAllocationPreviousYearsDatas">
             <EntityTypeMapping TypeName="Title1AllocationModel.tblBasicAllocationPreviousYearsData">
               <MappingFragment StoreEntitySet="tblBasicAllocationPreviousYearsData">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="StateDeterminedFinalAllocation" ColumnName="StateDeterminedFinalAllocation" />
-                <ScalarProperty Name="ProgramYear" ColumnName="ProgramYear" />
                 <ScalarProperty Name="AUN" ColumnName="AUN" />
+                <ScalarProperty Name="ProgramYear" ColumnName="ProgramYear" />
+                <ScalarProperty Name="StateDeterminedFinalAllocation" ColumnName="StateDeterminedFinalAllocation" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tblBasicAllocationSources">
             <EntityTypeMapping TypeName="Title1AllocationModel.tblBasicAllocationSource">
               <MappingFragment StoreEntitySet="tblBasicAllocationSource">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="sumLEAsAboveHoldHarmless" ColumnName="sumLEAsAboveHoldHarmless" />
-                <ScalarProperty Name="sumAdjustedLEAsAboveHoldHarmless" ColumnName="sumAdjustedLEAsAboveHoldHarmless" />
-                <ScalarProperty Name="SumBAllocationAfterCS" ColumnName="SumBAllocationAfterCS" />
-                <ScalarProperty Name="FINALAllocationAmount" ColumnName="FINALAllocationAmount" />
-                <ScalarProperty Name="AllocationstoAllLEAS" ColumnName="AllocationstoAllLEAS" />
-                <ScalarProperty Name="AdjustedLEAsAboveHoldHarmless" ColumnName="AdjustedLEAsAboveHoldHarmless" />
-                <ScalarProperty Name="LEAsAboveHoldHarmless" ColumnName="LEAsAboveHoldHarmless" />
-                <ScalarProperty Name="HoldHarmlessCheck" ColumnName="HoldHarmlessCheck" />
-                <ScalarProperty Name="HoldHarmlessAmount" ColumnName="HoldHarmlessAmount" />
-                <ScalarProperty Name="HoldHarmlessRate" ColumnName="HoldHarmlessRate" />
-                <ScalarProperty Name="BAllocationAfterCS" ColumnName="BAllocationAfterCS" />
-                <ScalarProperty Name="CharterSchoolAdjustments" ColumnName="CharterSchoolAdjustments" />
-                <ScalarProperty Name="PercentageFormula" ColumnName="PercentageFormula" />
-                <ScalarProperty Name="POP517" ColumnName="POP517" />
-                <ScalarProperty Name="TotalForumlaCount" ColumnName="TotalForumlaCount" />
-                <ScalarProperty Name="BasicAllocation" ColumnName="BasicAllocation" />
-                <ScalarProperty Name="ProgramYear" ColumnName="ProgramYear" />
                 <ScalarProperty Name="AUN" ColumnName="AUN" />
+                <ScalarProperty Name="ProgramYear" ColumnName="ProgramYear" />
+                <ScalarProperty Name="BasicAllocation" ColumnName="BasicAllocation" />
+                <ScalarProperty Name="TotalForumlaCount" ColumnName="TotalForumlaCount" />
+                <ScalarProperty Name="POP517" ColumnName="POP517" />
+                <ScalarProperty Name="PercentageFormula" ColumnName="PercentageFormula" />
+                <ScalarProperty Name="CharterSchoolAdjustments" ColumnName="CharterSchoolAdjustments" />
+                <ScalarProperty Name="BAllocationAfterCS" ColumnName="BAllocationAfterCS" />
+                <ScalarProperty Name="HoldHarmlessRate" ColumnName="HoldHarmlessRate" />
+                <ScalarProperty Name="HoldHarmlessAmount" ColumnName="HoldHarmlessAmount" />
+                <ScalarProperty Name="HoldHarmlessCheck" ColumnName="HoldHarmlessCheck" />
+                <ScalarProperty Name="LEAsAboveHoldHarmless" ColumnName="LEAsAboveHoldHarmless" />
+                <ScalarProperty Name="AdjustedLEAsAboveHoldHarmless" ColumnName="AdjustedLEAsAboveHoldHarmless" />
+                <ScalarProperty Name="AllocationstoAllLEAS" ColumnName="AllocationstoAllLEAS" />
+                <ScalarProperty Name="FINALAllocationAmount" ColumnName="FINALAllocationAmount" />
+                <ScalarProperty Name="SumBAllocationAfterCS" ColumnName="SumBAllocationAfterCS" />
+                <ScalarProperty Name="sumAdjustedLEAsAboveHoldHarmless" ColumnName="sumAdjustedLEAsAboveHoldHarmless" />
+                <ScalarProperty Name="sumLEAsAboveHoldHarmless" ColumnName="sumLEAsAboveHoldHarmless" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tblCharterSchools">
             <EntityTypeMapping TypeName="Title1AllocationModel.tblCharterSchool">
               <MappingFragment StoreEntitySet="tblCharterSchool">
-                <ScalarProperty Name="CSID" ColumnName="CSID" />
-                <ScalarProperty Name="CharterSchoolName" ColumnName="CharterSchoolName" />
                 <ScalarProperty Name="CSAUN" ColumnName="CSAUN" />
+                <ScalarProperty Name="CharterSchoolName" ColumnName="CharterSchoolName" />
+                <ScalarProperty Name="CSID" ColumnName="CSID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tblMapCharterSchooltoSDs">
             <EntityTypeMapping TypeName="Title1AllocationModel.tblMapCharterSchooltoSD">
               <MappingFragment StoreEntitySet="tblMapCharterSchooltoSD">
-                <ScalarProperty Name="CID" ColumnName="CID" />
-                <ScalarProperty Name="TotalSubtracted" ColumnName="TotalSubtracted" />
-                <ScalarProperty Name="EFIGAllocationPerPupilAmount" ColumnName="EFIGAllocationPerPupilAmount" />
-                <ScalarProperty Name="TargetedAllocationPerPupilAmt" ColumnName="TargetedAllocationPerPupilAmt" />
-                <ScalarProperty Name="ConcAllocationPerPupilAmt" ColumnName="ConcAllocationPerPupilAmt" />
-                <ScalarProperty Name="BasicAllocationPerPupilAmt" ColumnName="BasicAllocationPerPupilAmt" />
-                <ScalarProperty Name="FormulaStudents" ColumnName="FormulaStudents" />
-                <ScalarProperty Name="LowIncomePercentage" ColumnName="LowIncomePercentage" />
-                <ScalarProperty Name="NbrEnrolledStuds" ColumnName="NbrEnrolledStuds" />
-                <ScalarProperty Name="AgencyName" ColumnName="AgencyName" />
-                <ScalarProperty Name="AUN" ColumnName="AUN" />
-                <ScalarProperty Name="CSAUNName" ColumnName="CSAUNName" />
                 <ScalarProperty Name="CSAUN" ColumnName="CSAUN" />
+                <ScalarProperty Name="CSAUNName" ColumnName="CSAUNName" />
+                <ScalarProperty Name="AUN" ColumnName="AUN" />
+                <ScalarProperty Name="AgencyName" ColumnName="AgencyName" />
+                <ScalarProperty Name="NbrEnrolledStuds" ColumnName="NbrEnrolledStuds" />
+                <ScalarProperty Name="LowIncomePercentage" ColumnName="LowIncomePercentage" />
+                <ScalarProperty Name="FormulaStudents" ColumnName="FormulaStudents" />
+                <ScalarProperty Name="BasicAllocationPerPupilAmt" ColumnName="BasicAllocationPerPupilAmt" />
+                <ScalarProperty Name="ConcAllocationPerPupilAmt" ColumnName="ConcAllocationPerPupilAmt" />
+                <ScalarProperty Name="TargetedAllocationPerPupilAmt" ColumnName="TargetedAllocationPerPupilAmt" />
+                <ScalarProperty Name="EFIGAllocationPerPupilAmount" ColumnName="EFIGAllocationPerPupilAmount" />
+                <ScalarProperty Name="TotalSubtracted" ColumnName="TotalSubtracted" />
+                <ScalarProperty Name="CID" ColumnName="CID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tblSchoolDistricts">
             <EntityTypeMapping TypeName="Title1AllocationModel.tblSchoolDistrict">
               <MappingFragment StoreEntitySet="tblSchoolDistrict">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="AgencyName" ColumnName="AgencyName" />
                 <ScalarProperty Name="AUN" ColumnName="AUN" />
+                <ScalarProperty Name="AgencyName" ColumnName="AgencyName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="BasicAllocation" FunctionName="Title1AllocationModel.Store.BasicAllocation" />
+          <FunctionImportMapping FunctionImportName="ConcAllocation" FunctionName="Title1AllocationModel.Store.ConcAllocation" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

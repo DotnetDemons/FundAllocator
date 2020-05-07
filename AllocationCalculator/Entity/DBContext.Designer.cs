@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\upend\source\repos\AllocationCalculator\AllocationCalculator\Entity\DBContext.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\upend\Desktop\Bhanu Solution\FundAllocator\AllocationCalculator\Entity\DBContext.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.
