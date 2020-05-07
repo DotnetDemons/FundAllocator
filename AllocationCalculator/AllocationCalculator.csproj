@@ -153,6 +153,15 @@
     <Compile Include="Entity\tblCharterSchool.cs">
       <DependentUpon>DBContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity\tblConcAllocationEligibility.cs">
+      <DependentUpon>DBContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\tblConcAllocationPreviousYearsData.cs">
+      <DependentUpon>DBContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\tblConcAllocationSource.cs">
+      <DependentUpon>DBContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entity\tblMapCharterSchooltoSD.cs">
       <DependentUpon>DBContext.tt</DependentUpon>
     </Compile>

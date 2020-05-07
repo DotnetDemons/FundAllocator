@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Title1AllocationModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Title1AllocationModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="tblBasicAllocationPreviousYearsData">
           <Key>
             <PropertyRef Name="ID" />
@@ -46,6 +46,52 @@
           <Property Name="CharterSchoolName" Type="varchar" MaxLength="200" />
           <Property Name="CSID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
+        <EntityType Name="tblConcAllocationEligibility">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="AUN" Type="float" />
+          <Property Name="(LEA)" Type="nvarchar" MaxLength="255" />
+          <Property Name="Year2017" Type="float" />
+          <Property Name="Year2016" Type="float" />
+          <Property Name="Year2015" Type="float" />
+          <Property Name="Year2014" Type="float" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblConcAllocationPreviousYearsData">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="AUN" Type="int" />
+          <Property Name="ProgramYear" Type="int" />
+          <Property Name="StateDeterminedFinalAllocation" Type="decimal" Precision="20" Scale="9" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblConcAllocationSource">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="AUN" Type="int" />
+          <Property Name="ProgramYear" Type="int" />
+          <Property Name="ConcAllocation" Type="decimal" Precision="20" Scale="9" />
+          <Property Name="TotalForumlaCount" Type="float" />
+          <Property Name="POP517" Type="float" />
+          <Property Name="PercentageFormula" Type="float" />
+          <Property Name="FinalBasicAllocation" Type="decimal" Precision="20" Scale="9" />
+          <Property Name="CharterSchoolAdjustments" Type="int" />
+          <Property Name="BAllocationAfterCS" Type="float" />
+          <Property Name="HoldHarmlessRate" Type="int" />
+          <Property Name="HoldHarmlessAmount" Type="decimal" Precision="14" Scale="0" />
+          <Property Name="HoldHarmlessCheck" Type="decimal" Precision="14" Scale="0" />
+          <Property Name="LEAsAboveHoldHarmless" Type="float" />
+          <Property Name="AdjustedLEAsAboveHoldHarmless" Type="float" />
+          <Property Name="AllocationstoAllLEAS" Type="float" />
+          <Property Name="FINALConcAllocationAmount" Type="float" />
+          <Property Name="SumBAllocationAfterCS" Type="decimal" Precision="14" Scale="0" />
+          <Property Name="sumAdjustedLEAsAboveHoldHarmless" Type="decimal" Precision="14" Scale="0" />
+          <Property Name="sumLEAsAboveHoldHarmless" Type="decimal" Precision="14" Scale="0" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
         <EntityType Name="tblMapCharterSchooltoSD">
           <Key>
             <PropertyRef Name="CID" />
@@ -82,11 +128,13 @@
           <EntitySet Name="tblBasicAllocationPreviousYearsData" EntityType="Self.tblBasicAllocationPreviousYearsData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblBasicAllocationSource" EntityType="Self.tblBasicAllocationSource" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblCharterSchool" EntityType="Self.tblCharterSchool" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblConcAllocationEligibility" EntityType="Self.tblConcAllocationEligibility" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblConcAllocationPreviousYearsData" EntityType="Self.tblConcAllocationPreviousYearsData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblConcAllocationSource" EntityType="Self.tblConcAllocationSource" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblMapCharterSchooltoSD" EntityType="Self.tblMapCharterSchooltoSD" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tblSchoolDistrict" EntityType="Self.tblSchoolDistrict" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Title1AllocationModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -164,12 +212,61 @@
           <EntitySet Name="tblMapCharterSchooltoSDs" EntityType="Self.tblMapCharterSchooltoSD" />
           <EntitySet Name="tblSchoolDistricts" EntityType="Self.tblSchoolDistrict" />
           <FunctionImport Name="BasicAllocation" ReturnType="Collection(Decimal)">
-            <Parameter Name="ProgramYear" Mode="In" Type="Int32" />
+          <Parameter Name="ProgramYear" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="ConcAllocation">
-            <Parameter Name="ProgramYear" Mode="In" Type="Int32" />
+          <Parameter Name="ProgramYear" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="tblConcAllocationEligibilities" EntityType="Title1AllocationModel.tblConcAllocationEligibility" />
+          <EntitySet Name="tblConcAllocationPreviousYearsDatas" EntityType="Title1AllocationModel.tblConcAllocationPreviousYearsData" />
+          <EntitySet Name="tblConcAllocationSources" EntityType="Title1AllocationModel.tblConcAllocationSource" />
         </EntityContainer>
+        <EntityType Name="tblConcAllocationEligibility">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="AUN" Type="Double" />
+          <Property Name="C_LEA_" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Year2017" Type="Double" />
+          <Property Name="Year2016" Type="Double" />
+          <Property Name="Year2015" Type="Double" />
+          <Property Name="Year2014" Type="Double" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="tblConcAllocationPreviousYearsData">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="AUN" Type="Int32" />
+          <Property Name="ProgramYear" Type="Int32" />
+          <Property Name="StateDeterminedFinalAllocation" Type="Decimal" Precision="20" Scale="9" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="tblConcAllocationSource">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="AUN" Type="Int32" />
+          <Property Name="ProgramYear" Type="Int32" />
+          <Property Name="ConcAllocation" Type="Decimal" Precision="20" Scale="9" />
+          <Property Name="TotalForumlaCount" Type="Double" />
+          <Property Name="POP517" Type="Double" />
+          <Property Name="PercentageFormula" Type="Double" />
+          <Property Name="FinalBasicAllocation" Type="Decimal" Precision="20" Scale="9" />
+          <Property Name="CharterSchoolAdjustments" Type="Int32" />
+          <Property Name="BAllocationAfterCS" Type="Double" />
+          <Property Name="HoldHarmlessRate" Type="Int32" />
+          <Property Name="HoldHarmlessAmount" Type="Decimal" Precision="14" Scale="0" />
+          <Property Name="HoldHarmlessCheck" Type="Decimal" Precision="14" Scale="0" />
+          <Property Name="LEAsAboveHoldHarmless" Type="Double" />
+          <Property Name="AdjustedLEAsAboveHoldHarmless" Type="Double" />
+          <Property Name="AllocationstoAllLEAS" Type="Double" />
+          <Property Name="FINALConcAllocationAmount" Type="Double" />
+          <Property Name="SumBAllocationAfterCS" Type="Decimal" Precision="14" Scale="0" />
+          <Property Name="sumAdjustedLEAsAboveHoldHarmless" Type="Decimal" Precision="14" Scale="0" />
+          <Property Name="sumLEAsAboveHoldHarmless" Type="Decimal" Precision="14" Scale="0" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -250,6 +347,55 @@
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="BasicAllocation" FunctionName="Title1AllocationModel.Store.BasicAllocation" />
           <FunctionImportMapping FunctionImportName="ConcAllocation" FunctionName="Title1AllocationModel.Store.ConcAllocation" />
+          <EntitySetMapping Name="tblConcAllocationEligibilities">
+            <EntityTypeMapping TypeName="Title1AllocationModel.tblConcAllocationEligibility">
+              <MappingFragment StoreEntitySet="tblConcAllocationEligibility">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Year2014" ColumnName="Year2014" />
+                <ScalarProperty Name="Year2015" ColumnName="Year2015" />
+                <ScalarProperty Name="Year2016" ColumnName="Year2016" />
+                <ScalarProperty Name="Year2017" ColumnName="Year2017" />
+                <ScalarProperty Name="C_LEA_" ColumnName="(LEA)" />
+                <ScalarProperty Name="AUN" ColumnName="AUN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblConcAllocationPreviousYearsDatas">
+            <EntityTypeMapping TypeName="Title1AllocationModel.tblConcAllocationPreviousYearsData">
+              <MappingFragment StoreEntitySet="tblConcAllocationPreviousYearsData">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="StateDeterminedFinalAllocation" ColumnName="StateDeterminedFinalAllocation" />
+                <ScalarProperty Name="ProgramYear" ColumnName="ProgramYear" />
+                <ScalarProperty Name="AUN" ColumnName="AUN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblConcAllocationSources">
+            <EntityTypeMapping TypeName="Title1AllocationModel.tblConcAllocationSource">
+              <MappingFragment StoreEntitySet="tblConcAllocationSource">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="sumLEAsAboveHoldHarmless" ColumnName="sumLEAsAboveHoldHarmless" />
+                <ScalarProperty Name="sumAdjustedLEAsAboveHoldHarmless" ColumnName="sumAdjustedLEAsAboveHoldHarmless" />
+                <ScalarProperty Name="SumBAllocationAfterCS" ColumnName="SumBAllocationAfterCS" />
+                <ScalarProperty Name="FINALConcAllocationAmount" ColumnName="FINALConcAllocationAmount" />
+                <ScalarProperty Name="AllocationstoAllLEAS" ColumnName="AllocationstoAllLEAS" />
+                <ScalarProperty Name="AdjustedLEAsAboveHoldHarmless" ColumnName="AdjustedLEAsAboveHoldHarmless" />
+                <ScalarProperty Name="LEAsAboveHoldHarmless" ColumnName="LEAsAboveHoldHarmless" />
+                <ScalarProperty Name="HoldHarmlessCheck" ColumnName="HoldHarmlessCheck" />
+                <ScalarProperty Name="HoldHarmlessAmount" ColumnName="HoldHarmlessAmount" />
+                <ScalarProperty Name="HoldHarmlessRate" ColumnName="HoldHarmlessRate" />
+                <ScalarProperty Name="BAllocationAfterCS" ColumnName="BAllocationAfterCS" />
+                <ScalarProperty Name="CharterSchoolAdjustments" ColumnName="CharterSchoolAdjustments" />
+                <ScalarProperty Name="FinalBasicAllocation" ColumnName="FinalBasicAllocation" />
+                <ScalarProperty Name="PercentageFormula" ColumnName="PercentageFormula" />
+                <ScalarProperty Name="POP517" ColumnName="POP517" />
+                <ScalarProperty Name="TotalForumlaCount" ColumnName="TotalForumlaCount" />
+                <ScalarProperty Name="ConcAllocation" ColumnName="ConcAllocation" />
+                <ScalarProperty Name="ProgramYear" ColumnName="ProgramYear" />
+                <ScalarProperty Name="AUN" ColumnName="AUN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

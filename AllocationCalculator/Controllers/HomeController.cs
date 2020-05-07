@@ -167,7 +167,7 @@ namespace AllocationCalculator.Controllers
                     BasicAllocationPreviousYearsDataModel previousYearsDataModel = new BasicAllocationPreviousYearsDataModel();
                     if (dt.Rows[i][4] != null)
                     {
-                        if (dt.Rows[i][4].ToString() != "")
+                        if (dt.Rows[i][4].ToString() != "" && dt.Rows[i][9].ToString() != "")
                         {
                             previousYearsDataModel.AUN = int.Parse(dt.Rows[i][4].ToString());
                             previousYearsDataModel.StateDeterminedFinalAllocation = decimal.Parse(dt.Rows[i][9].ToString().Trim('$'));

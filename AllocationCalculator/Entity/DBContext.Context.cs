@@ -32,6 +32,9 @@ namespace AllocationCalculator.Entity
         public virtual DbSet<tblCharterSchool> tblCharterSchools { get; set; }
         public virtual DbSet<tblMapCharterSchooltoSD> tblMapCharterSchooltoSDs { get; set; }
         public virtual DbSet<tblSchoolDistrict> tblSchoolDistricts { get; set; }
+        public virtual DbSet<tblConcAllocationEligibility> tblConcAllocationEligibilities { get; set; }
+        public virtual DbSet<tblConcAllocationPreviousYearsData> tblConcAllocationPreviousYearsDatas { get; set; }
+        public virtual DbSet<tblConcAllocationSource> tblConcAllocationSources { get; set; }
     
         public virtual ObjectResult<Nullable<decimal>> BasicAllocation(Nullable<int> programYear)
         {
