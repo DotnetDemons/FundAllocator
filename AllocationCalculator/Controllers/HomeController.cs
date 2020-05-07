@@ -8,61 +8,105 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AllocationCalculator.Services;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace AllocationCalculator.Controllers
 {
     public class HomeController : Controller
     {
         private readonly DataRepository repository;
+        private readonly DataCalculationRepository dataCalculationRepository;
         public HomeController()
         {
             repository = new DataRepository();
+            dataCalculationRepository = new DataCalculationRepository();
         }
-        public ActionResult Index()
+        public ActionResult Index(string dummy = "")
         {
             return View();
         }
 
-        [ActionName("Importexcel")]
         [HttpPost]
-        public ActionResult Importexcel()
+        public ActionResult Index()
         {
-            List<SchoolDistrictsModel> districtsModel = new List<SchoolDistrictsModel>();
-            List<BasicAllocationSourcesModel> sourcesModel = new List<BasicAllocationSourcesModel>();
-            List<MapCharterSchooltoSdsModel> schooltoSdsModel = new List<MapCharterSchooltoSdsModel>();
-            List<BasicAllocationPreviousYearsDataModel> previousYearsDataModels = new List<BasicAllocationPreviousYearsDataModel>();
-            List<CharterSchoolsModel> schoolsModel = new List<CharterSchoolsModel>();
-            if (Request.Files["FileUpload1"].ContentLength > 0)
+            try
             {
-                DataTable dt = GetDataTable("FileUpload1");
-                DataTable dt1 = GetDataTable("FileUpload1", 3);
-                FillSchoolDistricts(ref districtsModel, ref sourcesModel, dt);
-                FillBasicAllocation(ref sourcesModel, dt1);
+
+                List<SchoolDistrictsModel> districtsModel = new List<SchoolDistrictsModel>();
+                List<BasicAllocationSourcesModel> sourcesModel = new List<BasicAllocationSourcesModel>();
+                List<MapCharterSchooltoSdsModel> schooltoSdsModel = new List<MapCharterSchooltoSdsModel>();
+                List<BasicAllocationPreviousYearsDataModel> previousYearsDataModels = new List<BasicAllocationPreviousYearsDataModel>();
+                List<CharterSchoolsModel> schoolsModel = new List<CharterSchoolsModel>();
+                List<AUNMappingModel> mappingAUNModels = new List<AUNMappingModel>();
+                if (Request.Files["FileUpload1"].ContentLength > 0)
+                {
+                    DataTable dt = GetDataTable("FileUpload1");
+                    DataTable dt1 = GetDataTable("FileUpload1", 3);
+                    FillSchoolDistricts(ref districtsModel, ref sourcesModel, dt);
+                    FillBasicAllocation(ref sourcesModel, dt1);
+                }
+                if (Request.Files["FileUpload2"].ContentLength > 0)
+                {
+                    DataTable dt = GetDataTable("FileUpload2");
+                    FillMapping(ref schooltoSdsModel, dt);
+                }
+                if (Request.Files["FileUpload3"].ContentLength > 0)
+                {
+                    DataTable dt = GetDataTable("FileUpload3");
+                    FillPreviousYearsData(ref previousYearsDataModels, dt);
+                }
+                if (Request.Files["FileUpload4"].ContentLength > 0)
+                {
+                    DataTable dt = GetDataTable("FileUpload4");
+                    FillAUNMapping(ref mappingAUNModels, dt);
+                }
+                if (districtsModel.Count > 0)
+                {
+                    MapSchoolDistrictsAUN(ref districtsModel, mappingAUNModels);
+                    repository.InsertSchoolDistricts(districtsModel);
+                }
+                if (sourcesModel.Count > 0)
+                {
+                    MapBasicAllocationAUN(ref sourcesModel, mappingAUNModels);
+                    repository.InsertBasicAllocationSource(sourcesModel);
+                }
+                if (previousYearsDataModels.Count > 0) repository.InsertPreviousYearsData(previousYearsDataModels);
+                if (schooltoSdsModel.Count > 0)
+                {
+                    var charterSchools = schooltoSdsModel.Select(x => new CharterSchoolsModel { CSAUN = x.CSAUN, CharterSchoolName = x.CSAUNName })
+                        .GroupBy(p => new { p.CSAUN, p.CharterSchoolName })
+                        .Select(g => g.First()).ToList();
+                    repository.InsertCharterSchools(charterSchools);
+                    repository.InsertMappingData(schooltoSdsModel);
+                }
+                ViewBag.AlertMessage = "Data uploaded successfully, To download report";
             }
-            if (Request.Files["FileUpload2"].ContentLength > 0)
+            catch (Exception Ex)
             {
-                DataTable dt = GetDataTable("FileUpload2");
-                FillMapping(ref schooltoSdsModel, dt);
+
             }
-            if (Request.Files["FileUpload3"].ContentLength > 0)
-            {
-                DataTable dt = GetDataTable("FileUpload3");
-                FillPreviousYearsData(ref previousYearsDataModels, dt);
-            }
-            if (districtsModel.Count > 0) repository.InsertSchoolDistricts(districtsModel);
-            if (sourcesModel.Count > 0) repository.InsertBasicAllocationSource(sourcesModel);
-            if (previousYearsDataModels.Count > 0) repository.InsertPreviousYearsData(previousYearsDataModels);
-            if (schooltoSdsModel.Count > 0)
-            {
-                var charterSchools = schooltoSdsModel.Select(x => new CharterSchoolsModel { CSAUN = x.CSAUN, CharterSchoolName = x.CSAUNName })
-                    .GroupBy(p => new { p.CSAUN, p.CharterSchoolName })
-                    .Select(g => g.First()).ToList();
-                repository.InsertCharterSchools(charterSchools);
-                repository.InsertMappingData(schooltoSdsModel);
-            }
-            return RedirectToAction("Index");
+            return View();
         }
 
+        public ActionResult ExportData()
+        {
+            var gv = new GridView();
+            gv.DataSource = dataCalculationRepository.CalculateData();
+            gv.DataBind();
+            Response.ClearContent();
+            Response.Buffer = true;
+            Response.AddHeader("content-disposition", "attachment; filename=FinalAllocation.xls");
+            Response.ContentType = "application/ms-excel";
+            Response.Charset = "";
+            StringWriter objStringWriter = new StringWriter();
+            HtmlTextWriter objHtmlTextWriter = new HtmlTextWriter(objStringWriter);
+            gv.RenderControl(objHtmlTextWriter);
+            Response.Output.Write(objStringWriter.ToString());
+            Response.Flush();
+            Response.End();
+            return View("Index");
+        }
 
         private DataTable GetDataTable(string file, int sheet = 0)
         {
@@ -100,7 +144,7 @@ namespace AllocationCalculator.Controllers
                     {
                         if (dt.Rows[i][3].ToString() != "" && dt.Rows[i][4].ToString() != "")
                         {
-                            districtModel.AUN = int.Parse(dt.Rows[i][3].ToString());
+                            districtModel.LEAID = int.Parse(dt.Rows[i][3].ToString());
                             districtModel.AgencyName = dt.Rows[i][4].ToString();
                             districtsModel.Add(districtModel);
                         }
@@ -110,7 +154,7 @@ namespace AllocationCalculator.Controllers
                     {
                         if (dt.Rows[i][3].ToString() != "" && dt.Rows[i][10].ToString() != "")
                         {
-                            sourceModel.AUN = int.Parse(dt.Rows[i][3].ToString());
+                            sourceModel.LEAID = int.Parse(dt.Rows[i][3].ToString());
                             sourceModel.BasicAllocation = decimal.Parse(dt.Rows[i][10].ToString());
                             sourcesModels.Add(sourceModel);
                         }
@@ -126,10 +170,10 @@ namespace AllocationCalculator.Controllers
                 {
                     if (dt.Rows[i][3] != null && dt.Rows[i][3].ToString() != "")
                     {
-                        int _aun = int.Parse(dt.Rows[i][3].ToString());
+                        int _leaid = int.Parse(dt.Rows[i][3].ToString());
                         for (int j = 0; j < sourcesModel.Count; j++)
                         {
-                            if (sourcesModel[j].AUN == _aun)
+                            if (sourcesModel[j].LEAID == _leaid)
                             {
                                 sourcesModel[j].TotalForumlaCount = double.Parse(dt.Rows[i][10].ToString());
                                 sourcesModel[j].POP517 = double.Parse(dt.Rows[i][11].ToString());
@@ -165,16 +209,49 @@ namespace AllocationCalculator.Controllers
                 if (i > 15)
                 {
                     BasicAllocationPreviousYearsDataModel previousYearsDataModel = new BasicAllocationPreviousYearsDataModel();
-                    if (dt.Rows[i][4] != null)
+                    if (dt.Rows[i][9] != null)
                     {
-                        if (dt.Rows[i][4].ToString() != "" && dt.Rows[i][9].ToString() != "")
+                        if (dt.Rows[i][9].ToString() != "")
                         {
-                            previousYearsDataModel.AUN = int.Parse(dt.Rows[i][4].ToString());
+                            previousYearsDataModel.AUN = (dt.Rows[i][4] + "") == "" ? 0 : int.Parse(dt.Rows[i][4].ToString());
                             previousYearsDataModel.StateDeterminedFinalAllocation = decimal.Parse(dt.Rows[i][9].ToString().Trim('$'));
                             previousYearsDataModels.Add(previousYearsDataModel);
                         }
                     }
                 }
+            }
+        }
+        private void FillAUNMapping(ref List<AUNMappingModel> mappingAUNModels, DataTable dt)
+        {
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                AUNMappingModel mappingModel = new AUNMappingModel();
+                if (dt.Rows[i][0] != null && dt.Rows[i][1] != null)
+                {
+                    if (dt.Rows[i][0].ToString() != "" && dt.Rows[i][1].ToString() != "")
+                    {
+                        mappingModel.LEAID = int.Parse(dt.Rows[i][0].ToString());
+                        mappingModel.AUN = int.Parse(dt.Rows[i][1].ToString());
+                        mappingAUNModels.Add(mappingModel);
+                    }
+                }
+            }
+        }
+
+        private void MapBasicAllocationAUN(ref List<BasicAllocationSourcesModel> sourcesModels, List<AUNMappingModel> mappingModels)
+        {
+            for (int i = 0; i < sourcesModels.Count; i++)
+            {
+                var _leaid = sourcesModels[i].LEAID;
+                sourcesModels[i].AUN = mappingModels.Where(x => x.LEAID == _leaid).Select(x => x.AUN).FirstOrDefault();
+            }
+        }
+        private void MapSchoolDistrictsAUN(ref List<SchoolDistrictsModel> districtsModels, List<AUNMappingModel> mappingModels)
+        {
+            for (int i = 0; i < districtsModels.Count; i++)
+            {
+                var _leaid = districtsModels[i].LEAID;
+                districtsModels[i].AUN = mappingModels.Where(x => x.LEAID == _leaid).Select(x => x.AUN).FirstOrDefault();
             }
         }
 

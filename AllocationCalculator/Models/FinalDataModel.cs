@@ -5,11 +5,10 @@ using System.Web;
 
 namespace AllocationCalculator.Models
 {
-    public class SchoolDistrictsModel
+    public class FinalDataModel
     {
-        public Nullable<int> AUN { get; set; }
+        public int? AUN { get; set; }
         public string AgencyName { get; set; }
-        public int ID { get; set; }
-        public Nullable<int> LEAID { get; set; }
+        public double? FinalBasicAllocatedAmount { get; set; }
     }
 }

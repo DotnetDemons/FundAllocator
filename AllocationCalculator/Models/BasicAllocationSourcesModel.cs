@@ -26,5 +26,6 @@ namespace AllocationCalculator.Models
         public Nullable<decimal> sumAdjustedLEAsAboveHoldHarmless { get; set; }
         public Nullable<decimal> sumLEAsAboveHoldHarmless { get; set; }
         public int ID { get; set; }
+        public Nullable<int> LEAID { get; set; }
     }
 }

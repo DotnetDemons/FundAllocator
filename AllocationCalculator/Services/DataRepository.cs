@@ -16,14 +16,10 @@ namespace AllocationCalculator.Services
         {
             var allRecords = (from a in _db.tblSchoolDistricts select a).ToList();
             _db.tblSchoolDistricts.RemoveRange(allRecords);
-            
-            foreach (var item in districtsModels)
-            {
-                tblSchoolDistrict tblData = new tblSchoolDistrict();
-                tblData.AgencyName = item.AgencyName;
-                tblData.AUN = item.AUN;
-                _db.tblSchoolDistricts.Add(tblData);
-            }
+
+            var tblData = districtsModels.Select(x => new tblSchoolDistrict { AgencyName = x.AgencyName, AUN = x.AUN }).ToList();
+            _db.tblSchoolDistricts.AddRange(tblData);
+
             return _db.SaveChanges();
         }
         public int InsertBasicAllocationSource(List<BasicAllocationSourcesModel> sourcesModels)
@@ -31,16 +27,16 @@ namespace AllocationCalculator.Services
             var allRecords = (from a in _db.tblBasicAllocationSources select a).ToList();
             _db.tblBasicAllocationSources.RemoveRange(allRecords);
 
-            foreach (var item in sourcesModels)
+            var tblData = sourcesModels.Select(x => new tblBasicAllocationSource
             {
-                tblBasicAllocationSource tblData = new tblBasicAllocationSource();
-                tblData.BasicAllocation = item.BasicAllocation;
-                tblData.AUN = item.AUN;
-                tblData.TotalForumlaCount = item.TotalForumlaCount;
-                tblData.POP517 = item.POP517;
-                tblData.PercentageFormula = item.PercentageFormula;
-                _db.tblBasicAllocationSources.Add(tblData);
-            }
+                BasicAllocation = x.BasicAllocation,
+                AUN = x.AUN,
+                TotalForumlaCount = x.TotalForumlaCount,
+                POP517 = x.POP517,
+                PercentageFormula = x.PercentageFormula
+            }).ToList();
+            _db.tblBasicAllocationSources.AddRange(tblData);
+
             return _db.SaveChanges();
         }
         public int InsertMappingData(List<MapCharterSchooltoSdsModel> mapCharterModels)
@@ -48,16 +44,10 @@ namespace AllocationCalculator.Services
             var allRecords = (from a in _db.tblMapCharterSchooltoSDs select a).ToList();
             _db.tblMapCharterSchooltoSDs.RemoveRange(allRecords);
 
-            foreach (var item in mapCharterModels)
-            {
-                tblMapCharterSchooltoSD tblData = new tblMapCharterSchooltoSD();
-                tblData.AgencyName = item.AgencyName;
-                tblData.AUN = item.AUN;
-                tblData.CSAUN = item.CSAUN;
-                tblData.CSAUNName = item.CSAUNName;
-                tblData.NbrEnrolledStuds = item.NbrEnrolledStuds;
-                _db.tblMapCharterSchooltoSDs.Add(tblData);
-            }
+            var tblData = mapCharterModels.Select(x => new tblMapCharterSchooltoSD { AgencyName = x.AgencyName, AUN = x.AUN, CSAUN = x.CSAUN, CSAUNName = x.CSAUNName,
+                NbrEnrolledStuds = x.NbrEnrolledStuds }).ToList();
+            _db.tblMapCharterSchooltoSDs.AddRange(tblData);
+
             return _db.SaveChanges();
         }
         public int InsertPreviousYearsData(List<BasicAllocationPreviousYearsDataModel> previousYearsDataModels)
@@ -65,13 +55,9 @@ namespace AllocationCalculator.Services
             var allRecords = (from a in _db.tblBasicAllocationPreviousYearsDatas select a).ToList();
             _db.tblBasicAllocationPreviousYearsDatas.RemoveRange(allRecords);
 
-            foreach (var item in previousYearsDataModels)
-            {
-                tblBasicAllocationPreviousYearsData tblData = new tblBasicAllocationPreviousYearsData();
-                tblData.StateDeterminedFinalAllocation = item.StateDeterminedFinalAllocation;
-                tblData.AUN = item.AUN;
-                _db.tblBasicAllocationPreviousYearsDatas.Add(tblData);
-            }
+            var tblData = previousYearsDataModels.Select(x => new tblBasicAllocationPreviousYearsData { StateDeterminedFinalAllocation = x.StateDeterminedFinalAllocation, AUN = x.AUN }).ToList();
+            _db.tblBasicAllocationPreviousYearsDatas.AddRange(tblData);
+
             return _db.SaveChanges();
         }
         public int InsertCharterSchools(List<CharterSchoolsModel> schoolsModels)
@@ -79,15 +65,10 @@ namespace AllocationCalculator.Services
             var allRecords = (from a in _db.tblCharterSchools select a).ToList();
             _db.tblCharterSchools.RemoveRange(allRecords);
 
-            foreach (var item in schoolsModels)
-            {
-                tblCharterSchool tblData = new tblCharterSchool();
-                tblData.CharterSchoolName = item.CharterSchoolName;
-                tblData.CSAUN = item.CSAUN;
-                _db.tblCharterSchools.Add(tblData);
-            }
+            var tblData = schoolsModels.Select(x => new tblCharterSchool { CharterSchoolName = x.CharterSchoolName, CSAUN = x.CSAUN }).ToList();
+            _db.tblCharterSchools.AddRange(tblData);
+          
             return _db.SaveChanges();
         }
-
     }
 }
