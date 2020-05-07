@@ -34,7 +34,8 @@ namespace AllocationCalculator.Services
                 AUN = x.AUN,
                 TotalForumlaCount = x.TotalForumlaCount,
                 POP517 = x.POP517,
-                PercentageFormula = x.PercentageFormula
+                PercentageFormula = x.PercentageFormula,
+                ProgramYear = x.ProgramYear
             }).ToList();
             _db.tblBasicAllocationSources.AddRange(tblData);
 
@@ -45,8 +46,14 @@ namespace AllocationCalculator.Services
             var allRecords = (from a in _db.tblMapCharterSchooltoSDs select a).ToList();
             _db.tblMapCharterSchooltoSDs.RemoveRange(allRecords);
 
-            var tblData = mapCharterModels.Select(x => new tblMapCharterSchooltoSD { AgencyName = x.AgencyName, AUN = x.AUN, CSAUN = x.CSAUN, CSAUNName = x.CSAUNName,
-                NbrEnrolledStuds = x.NbrEnrolledStuds }).ToList();
+            var tblData = mapCharterModels.Select(x => new tblMapCharterSchooltoSD
+            {
+                AgencyName = x.AgencyName,
+                AUN = x.AUN,
+                CSAUN = x.CSAUN,
+                CSAUNName = x.CSAUNName,
+                NbrEnrolledStuds = x.NbrEnrolledStuds
+            }).ToList();
             _db.tblMapCharterSchooltoSDs.AddRange(tblData);
 
             return _db.SaveChanges();
@@ -56,7 +63,12 @@ namespace AllocationCalculator.Services
             var allRecords = (from a in _db.tblBasicAllocationPreviousYearsDatas select a).ToList();
             _db.tblBasicAllocationPreviousYearsDatas.RemoveRange(allRecords);
 
-            var tblData = previousYearsDataModels.Select(x => new tblBasicAllocationPreviousYearsData { StateDeterminedFinalAllocation = x.StateDeterminedFinalAllocation, AUN = x.AUN }).ToList();
+            var tblData = previousYearsDataModels.Select(x => new tblBasicAllocationPreviousYearsData
+            {
+                StateDeterminedFinalAllocation = x.StateDeterminedFinalAllocation,
+                AUN = x.AUN,
+                ProgramYear = x.ProgramYear
+            }).ToList();
             _db.tblBasicAllocationPreviousYearsDatas.AddRange(tblData);
 
             return _db.SaveChanges();
@@ -68,7 +80,7 @@ namespace AllocationCalculator.Services
 
             var tblData = schoolsModels.Select(x => new tblCharterSchool { CharterSchoolName = x.CharterSchoolName, CSAUN = x.CSAUN }).ToList();
             _db.tblCharterSchools.AddRange(tblData);
-          
+
             return _db.SaveChanges();
         }
     }
