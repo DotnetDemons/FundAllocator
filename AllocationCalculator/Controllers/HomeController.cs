@@ -177,7 +177,7 @@ namespace AllocationCalculator.Controllers
                             {
                                 sourcesModel[j].TotalForumlaCount = double.Parse(dt.Rows[i][10].ToString());
                                 sourcesModel[j].POP517 = double.Parse(dt.Rows[i][11].ToString());
-                                var percentageFormula = (double.Parse(dt.Rows[i][10].ToString()) / double.Parse(dt.Rows[i][11].ToString()))*100;
+                                var percentageFormula = (double.Parse(dt.Rows[i][12].ToString().Trim('%')));
                                 sourcesModel[j].PercentageFormula = percentageFormula;
                                 break;
                             }
