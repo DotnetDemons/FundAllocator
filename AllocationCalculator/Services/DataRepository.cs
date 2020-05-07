@@ -14,7 +14,10 @@ namespace AllocationCalculator.Services
 
         public int InsertSchoolDistricts(List<SchoolDistrictsModel> districtsModels)
         {
-            foreach(var item in districtsModels)
+            var allRecords = (from a in _db.tblSchoolDistricts select a).ToList();
+            _db.tblSchoolDistricts.RemoveRange(allRecords);
+            
+            foreach (var item in districtsModels)
             {
                 tblSchoolDistrict tblData = new tblSchoolDistrict();
                 tblData.AgencyName = item.AgencyName;
@@ -25,6 +28,9 @@ namespace AllocationCalculator.Services
         }
         public int InsertBasicAllocationSource(List<BasicAllocationSourcesModel> sourcesModels)
         {
+            var allRecords = (from a in _db.tblBasicAllocationSources select a).ToList();
+            _db.tblBasicAllocationSources.RemoveRange(allRecords);
+
             foreach (var item in sourcesModels)
             {
                 tblBasicAllocationSource tblData = new tblBasicAllocationSource();
@@ -39,6 +45,9 @@ namespace AllocationCalculator.Services
         }
         public int InsertMappingData(List<MapCharterSchooltoSdsModel> mapCharterModels)
         {
+            var allRecords = (from a in _db.tblMapCharterSchooltoSDs select a).ToList();
+            _db.tblMapCharterSchooltoSDs.RemoveRange(allRecords);
+
             foreach (var item in mapCharterModels)
             {
                 tblMapCharterSchooltoSD tblData = new tblMapCharterSchooltoSD();
@@ -53,6 +62,9 @@ namespace AllocationCalculator.Services
         }
         public int InsertPreviousYearsData(List<BasicAllocationPreviousYearsDataModel> previousYearsDataModels)
         {
+            var allRecords = (from a in _db.tblBasicAllocationPreviousYearsDatas select a).ToList();
+            _db.tblBasicAllocationPreviousYearsDatas.RemoveRange(allRecords);
+
             foreach (var item in previousYearsDataModels)
             {
                 tblBasicAllocationPreviousYearsData tblData = new tblBasicAllocationPreviousYearsData();
@@ -62,5 +74,20 @@ namespace AllocationCalculator.Services
             }
             return _db.SaveChanges();
         }
+        public int InsertCharterSchools(List<CharterSchoolsModel> schoolsModels)
+        {
+            var allRecords = (from a in _db.tblCharterSchools select a).ToList();
+            _db.tblCharterSchools.RemoveRange(allRecords);
+
+            foreach (var item in schoolsModels)
+            {
+                tblCharterSchool tblData = new tblCharterSchool();
+                tblData.CharterSchoolName = item.CharterSchoolName;
+                tblData.CSAUN = item.CSAUN;
+                _db.tblCharterSchools.Add(tblData);
+            }
+            return _db.SaveChanges();
+        }
+
     }
 }
