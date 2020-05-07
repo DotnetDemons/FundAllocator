@@ -1,6 +1,7 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+@model AllocationCalculator.Models.HomeModel
 
 <div class="row">
     <div class="col-md-2">
@@ -10,6 +11,10 @@
         <h4>Basic Allocation</h4>
         @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
+            <div class="form-group">
+                <label>Year</label>
+                @Html.TextBoxFor(x=>x.Year, null, new { @class = "form-control" })
+            </div>
             <div class="form-group">
                 <label>sheet a</label>
                 <input type="file" id="FileUpload1" name="FileUpload1" class="form-control" />

@@ -195,6 +195,7 @@
     <Compile Include="Models\BasicAllocationSourcesModel.cs" />
     <Compile Include="Models\CharterSchoolsModel.cs" />
     <Compile Include="Models\FinalDataModel.cs" />
+    <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Models\MapCharterSchooltoSdsModel.cs" />
     <Compile Include="Models\SchoolDistrictsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
