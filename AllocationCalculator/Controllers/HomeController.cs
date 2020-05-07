@@ -209,13 +209,13 @@ namespace AllocationCalculator.Controllers
                     {
                         if (dt.Rows[i][9].ToString() != "" && dt.Rows[i][5].ToString() != "")
                         {
-                            previousYearsDataModel.AUN = (dt.Rows[i][4] + "") == "" ? 999999999: int.Parse(dt.Rows[i][4].ToString());
+                            previousYearsDataModel.AUN = (dt.Rows[i][4] + "") == "" ? 999999999 : int.Parse(dt.Rows[i][4].ToString());
                             previousYearsDataModel.StateDeterminedFinalAllocation = decimal.Parse(dt.Rows[i][9].ToString().Trim('$'));
                             previousYearsDataModel.ProgramYear = (year - 1);
                             previousYearsDataModels.Add(previousYearsDataModel);
                         }
                     }
-                    if(dt.Rows[i][5].ToString() != "" && dt.Rows[i][6].ToString() == "")
+                    if (dt.Rows[i][5].ToString() != "" && dt.Rows[i][6].ToString() == "")
                     {
                         BasicAllocationSourcesModel sourcesModel = new BasicAllocationSourcesModel();
                         sourcesModel.AUN = int.Parse(dt.Rows[i][4].ToString());
@@ -246,9 +246,12 @@ namespace AllocationCalculator.Controllers
         {
             for (int i = 0; i < sourcesModels.Count; i++)
             {
-                var _leaid = sourcesModels[i].LEAID;
-                var _aun = mappingModels.Where(x => x.LEAID == _leaid).Select(x => x.AUN).FirstOrDefault();
-                sourcesModels[i].AUN = _aun == 0 ? 999999999 : _aun;
+                if (sourcesModels[i].BasicAllocation != null && sourcesModels[i].BasicAllocation != 0)
+                {
+                    var _leaid = sourcesModels[i].LEAID;
+                    var _aun = mappingModels.Where(x => x.LEAID == _leaid).Select(x => x.AUN).FirstOrDefault();
+                    sourcesModels[i].AUN = _aun == 0 ? 999999999 : _aun;
+                }
             }
         }
         private void MapSchoolDistrictsAUN(ref List<SchoolDistrictsModel> districtsModels, List<AUNMappingModel> mappingModels)
