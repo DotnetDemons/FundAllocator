@@ -31,10 +31,11 @@ namespace AllocationCalculator.Controllers
             List<BasicAllocationSourcesModel> sourcesModel = new List<BasicAllocationSourcesModel>();
             List<MapCharterSchooltoSdsModel> schooltoSdsModel = new List<MapCharterSchooltoSdsModel>();
             List<BasicAllocationPreviousYearsDataModel> previousYearsDataModels = new List<BasicAllocationPreviousYearsDataModel>();
+            List<CharterSchoolsModel> schoolsModel = new List<CharterSchoolsModel>();
             if (Request.Files["FileUpload1"].ContentLength > 0)
             {
                 DataTable dt = GetDataTable("FileUpload1");
-                DataTable dt1 = GetDataTable("FileUpload1", 1);
+                DataTable dt1 = GetDataTable("FileUpload1", 3);
                 FillSchoolDistricts(ref districtsModel, ref sourcesModel, dt);
                 FillBasicAllocation(ref sourcesModel, dt1);
             }
@@ -48,14 +49,21 @@ namespace AllocationCalculator.Controllers
                 DataTable dt = GetDataTable("FileUpload3");
                 FillPreviousYearsData(ref previousYearsDataModels, dt);
             }
-            repository.InsertSchoolDistricts(districtsModel);
-            repository.InsertBasicAllocationSource(sourcesModel);
-            repository.InsertMappingData(schooltoSdsModel);
-            repository.InsertPreviousYearsData(previousYearsDataModels);
-            return View();
+            if (districtsModel.Count > 0) repository.InsertSchoolDistricts(districtsModel);
+            if (sourcesModel.Count > 0) repository.InsertBasicAllocationSource(sourcesModel);
+            if (previousYearsDataModels.Count > 0) repository.InsertPreviousYearsData(previousYearsDataModels);
+            if (schooltoSdsModel.Count > 0)
+            {
+                var charterSchools = schooltoSdsModel.Select(x => new CharterSchoolsModel { CSAUN = x.CSAUN, CharterSchoolName = x.CSAUNName })
+                    .GroupBy(p => new { p.CSAUN, p.CharterSchoolName })
+                    .Select(g => g.First()).ToList();
+                repository.InsertCharterSchools(charterSchools);
+                repository.InsertMappingData(schooltoSdsModel);
+            }
+            return RedirectToAction("Index");
         }
 
-      
+
         private DataTable GetDataTable(string file, int sheet = 0)
         {
             string extension = System.IO.Path.GetExtension(Request.Files[file].FileName).ToLower();
