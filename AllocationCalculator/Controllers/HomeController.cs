@@ -91,6 +91,9 @@ namespace AllocationCalculator.Controllers
                 concDataRepository.InsertConcAllocationSource(sourcesModel);
             }
             if (previousYearsDataModels.Count > 0) repository.InsertPreviousYearsData(previousYearsDataModels);
+            if (concPreviousYearsDataModels.Count > 0) repository.InsertConcPreviousYearsData(concPreviousYearsDataModels);
+            if (eligibilityModels.Count > 0) repository.InsertConcEligibilityData(eligibilityModels);
+            
             if (schooltoSdsModel.Count > 0)
             {
                 var charterSchools = schooltoSdsModel.Select(x => new CharterSchoolsModel { CSAUN = x.CSAUN, CharterSchoolName = x.CSAUNName })

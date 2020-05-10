@@ -112,7 +112,7 @@ namespace AllocationCalculator.BusinessLogic
         {
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                if (i > 15)
+                if (i > 14)
                 {
                     ConcAllocationPreviousYearsDataModel previousYearsDataModel = new ConcAllocationPreviousYearsDataModel();
                     if (dt.Rows[i][9] != null)
@@ -177,10 +177,10 @@ namespace AllocationCalculator.BusinessLogic
                         if (dt.Rows[i][0].ToString() != "" && dt.Rows[i][1].ToString() != "")
                         {
                             eligibilityModel.AUN = int.Parse(dt.Rows[i][0].ToString());
-                            eligibilityModel.Year2014 = float.Parse(dt.Rows[i][16].ToString().Trim('%'));
-                            eligibilityModel.Year2015 = float.Parse(dt.Rows[i][13].ToString().Trim('%'));
-                            eligibilityModel.Year2016 = float.Parse(dt.Rows[i][10].ToString().Trim('%'));
-                            eligibilityModel.Year2017 = float.Parse(dt.Rows[i][7].ToString().Trim('%'));
+                            eligibilityModel.Year2014 = dt.Rows[i][16].ToString() == string.Empty ? 0 : float.Parse(dt.Rows[i][16].ToString().Trim('%'));
+                            eligibilityModel.Year2015 = dt.Rows[i][13].ToString() == string.Empty ? 0 : float.Parse(dt.Rows[i][13].ToString().Trim('%'));
+                            eligibilityModel.Year2016 = dt.Rows[i][10].ToString() == string.Empty ? 0 : float.Parse(dt.Rows[i][10].ToString().Trim('%'));
+                            eligibilityModel.Year2017 = dt.Rows[i][7].ToString() == string.Empty ? 0 : float.Parse(dt.Rows[i][7].ToString().Trim('%'));
                             eligibilityModels.Add(eligibilityModel);
                         }
                     }

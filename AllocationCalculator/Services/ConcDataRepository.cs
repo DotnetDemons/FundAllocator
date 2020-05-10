@@ -20,10 +20,10 @@ namespace AllocationCalculator.Services
                 DataRow dr = concSource.NewRow();
                 dr["AUN"] = item.AUN;
                 dr["ProgramYear"] = item.ProgramYear;
-                dr["ConcAllocation"] = item.ConcAllocation;
-                dr["TotalForumlaCount"] = item.TotalForumlaCount;
-                dr["POP517"] = item.POP517;
-                dr["PercentageFormula"] = item.PercentageFormula;
+                dr["ConcAllocation"] = item.ConcAllocation == null ? 0 : item.ConcAllocation;
+                dr["TotalForumlaCount"] = item.TotalForumlaCount == null ? 0 : item.TotalForumlaCount;
+                dr["POP517"] = item.POP517 == null ? 0 : item.POP517;
+                dr["PercentageFormula"] = item.PercentageFormula == null ? 0 : item.PercentageFormula;
                 dr["FinalBasicAllocation"] = DBNull.Value;
                 dr["CharterSchoolAdjustments"] = DBNull.Value;
                 dr["BAllocationAfterCS"] = DBNull.Value;
@@ -79,31 +79,31 @@ namespace AllocationCalculator.Services
         private DataTable BuildCONCSource()
         {
             DataTable tbl = new DataTable();
-            tbl.Columns.Add(new DataColumn("AUN", typeof(int?)));
-            tbl.Columns.Add(new DataColumn("ProgramYear", typeof(int?)));
-            tbl.Columns.Add(new DataColumn("ConcAllocation", typeof(decimal?)));
+            tbl.Columns.Add(new DataColumn("AUN", typeof(int)));
+            tbl.Columns.Add(new DataColumn("ProgramYear", typeof(int)));
+            tbl.Columns.Add(new DataColumn("ConcAllocation", typeof(decimal)));
 
-            tbl.Columns.Add(new DataColumn("TotalForumlaCount", typeof(double?)));
-            tbl.Columns.Add(new DataColumn("POP517", typeof(double?)));
-            tbl.Columns.Add(new DataColumn("PercentageFormula", typeof(double?)));
+            tbl.Columns.Add(new DataColumn("TotalForumlaCount", typeof(double)));
+            tbl.Columns.Add(new DataColumn("POP517", typeof(double)));
+            tbl.Columns.Add(new DataColumn("PercentageFormula", typeof(double)));
 
-            tbl.Columns.Add(new DataColumn("FinalBasicAllocation", typeof(decimal?)));
-            tbl.Columns.Add(new DataColumn("CharterSchoolAdjustments", typeof(int?)));
-            tbl.Columns.Add(new DataColumn("BAllocationAfterCS", typeof(double?)));
+            tbl.Columns.Add(new DataColumn("FinalBasicAllocation", typeof(decimal)));
+            tbl.Columns.Add(new DataColumn("CharterSchoolAdjustments", typeof(int)));
+            tbl.Columns.Add(new DataColumn("BAllocationAfterCS", typeof(double)));
 
-            tbl.Columns.Add(new DataColumn("HoldHarmlessRate", typeof(int?)));
-            tbl.Columns.Add(new DataColumn("HoldHarmlessAmount", typeof(decimal?)));
-            tbl.Columns.Add(new DataColumn("HoldHarmlessCheck", typeof(decimal?)));
+            tbl.Columns.Add(new DataColumn("HoldHarmlessRate", typeof(int)));
+            tbl.Columns.Add(new DataColumn("HoldHarmlessAmount", typeof(decimal)));
+            tbl.Columns.Add(new DataColumn("HoldHarmlessCheck", typeof(decimal)));
 
-            tbl.Columns.Add(new DataColumn("LEAsAboveHoldHarmless", typeof(double?)));
-            tbl.Columns.Add(new DataColumn("AdjustedLEAsAboveHoldHarmless", typeof(double?)));
-            tbl.Columns.Add(new DataColumn("AllocationstoAllLEAS", typeof(double?)));
+            tbl.Columns.Add(new DataColumn("LEAsAboveHoldHarmless", typeof(double)));
+            tbl.Columns.Add(new DataColumn("AdjustedLEAsAboveHoldHarmless", typeof(double)));
+            tbl.Columns.Add(new DataColumn("AllocationstoAllLEAS", typeof(double)));
 
-            tbl.Columns.Add(new DataColumn("FINALConcAllocationAmount", typeof(double?)));
-            tbl.Columns.Add(new DataColumn("SumBAllocationAfterCS", typeof(decimal?)));
-            tbl.Columns.Add(new DataColumn("sumAdjustedLEAsAboveHoldHarmless", typeof(decimal?)));
+            tbl.Columns.Add(new DataColumn("FINALConcAllocationAmount", typeof(double)));
+            tbl.Columns.Add(new DataColumn("SumBAllocationAfterCS", typeof(decimal)));
+            tbl.Columns.Add(new DataColumn("sumAdjustedLEAsAboveHoldHarmless", typeof(decimal)));
 
-            tbl.Columns.Add(new DataColumn("sumLEAsAboveHoldHarmless", typeof(decimal?)));
+            tbl.Columns.Add(new DataColumn("sumLEAsAboveHoldHarmless", typeof(decimal)));
             tbl.Columns.Add(new DataColumn("ID", typeof(int)));
 
             return tbl;
