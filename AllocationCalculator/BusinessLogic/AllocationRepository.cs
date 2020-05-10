@@ -54,7 +54,7 @@ namespace AllocationCalculator.BusinessLogic
                             {
                                 sourcesModel[j].TotalForumlaCount = double.Parse(dt.Rows[i][10].ToString());
                                 sourcesModel[j].POP517 = double.Parse(dt.Rows[i][11].ToString());
-                                var percentageFormula = (double.Parse(dt.Rows[i][12].ToString().Trim('%')));
+                                var percentageFormula = (float.Parse(dt.Rows[i][12].ToString().Trim('%')));
                                 sourcesModel[j].PercentageFormula = percentageFormula;
                                 sourcesModel[j].ProgramYear = year;
                                 break;
