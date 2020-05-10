@@ -5,11 +5,12 @@ using System.Web;
 
 namespace AllocationCalculator.Models
 {
-    public class BasicAllocationSourcesModel
+    public class AllocationSourcesModel
     {
         public Nullable<int> AUN { get; set; }
         public Nullable<int> ProgramYear { get; set; }
         public Nullable<decimal> BasicAllocation { get; set; }
+        public Nullable<decimal> ConcAllocation { get; set; }
         public Nullable<double> TotalForumlaCount { get; set; }
         public Nullable<double> POP517 { get; set; }
         public Nullable<double> PercentageFormula { get; set; }

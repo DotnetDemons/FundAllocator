@@ -23,7 +23,7 @@ namespace AllocationCalculator.Services
 
             return _db.SaveChanges();
         }
-        public int InsertBasicAllocationSource(List<BasicAllocationSourcesModel> sourcesModels)
+        public int InsertBasicAllocationSource(List<AllocationSourcesModel> sourcesModels)
         {
             var allRecords = (from a in _db.tblBasicAllocationSources select a).ToList();
             _db.tblBasicAllocationSources.RemoveRange(allRecords);
@@ -80,6 +80,40 @@ namespace AllocationCalculator.Services
 
             var tblData = schoolsModels.Select(x => new tblCharterSchool { CharterSchoolName = x.CharterSchoolName, CSAUN = x.CSAUN }).ToList();
             _db.tblCharterSchools.AddRange(tblData);
+
+            return _db.SaveChanges();
+        }
+
+        public int InsertConcPreviousYearsData(List<ConcAllocationPreviousYearsDataModel> concPreviousYearsDataModels)
+        {
+            var allRecords = (from a in _db.tblConcAllocationPreviousYearsDatas select a).ToList();
+            _db.tblConcAllocationPreviousYearsDatas.RemoveRange(allRecords);
+
+            var tblData = concPreviousYearsDataModels.Select(x => new tblConcAllocationPreviousYearsData
+            {
+                StateDeterminedFinalAllocation = x.StateDeterminedFinalAllocation,
+                AUN = x.AUN,
+                ProgramYear = x.ProgramYear
+            }).ToList();
+            _db.tblConcAllocationPreviousYearsDatas.AddRange(tblData);
+
+            return _db.SaveChanges();
+        }
+
+        public int InsertConcEligibilityData(List<ConcAllocationEligibilityModel> eligibilityModels)
+        {
+            var allRecords = (from a in _db.tblConcAllocationEligibilities select a).ToList();
+            _db.tblConcAllocationEligibilities.RemoveRange(allRecords);
+
+            var tblData = eligibilityModels.Select(x => new tblConcAllocationEligibility
+            {
+                AUN = x.AUN,
+                Year2014 = x.Year2014,
+                Year2015 = x.Year2015,
+                Year2016 = x.Year2016,
+                Year2017 = x.Year2017
+            }).ToList();
+            _db.tblConcAllocationEligibilities.AddRange(tblData);
 
             return _db.SaveChanges();
         }
