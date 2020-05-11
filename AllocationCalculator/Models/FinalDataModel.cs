@@ -10,5 +10,6 @@ namespace AllocationCalculator.Models
         public int? AUN { get; set; }
         public string AgencyName { get; set; }
         public double? FinalBasicAllocatedAmount { get; set; }
+        public double? FinalConcAllocatedAmount { get; set; }
     }
 }
