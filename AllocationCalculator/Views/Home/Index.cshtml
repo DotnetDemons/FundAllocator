@@ -6,16 +6,12 @@
 @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <div class="row">
-        <div class="col-md-4 col-md-offset-4">
+        <div class="col-md-4">
+            <h4>Common</h4>
             <div class="form-group">
                 <label>Year</label>
                 @Html.TextBoxFor(x => x.Year, null, new { @class = "form-control" })
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-5 col-md-offset-1">
-            <h4>Basic Allocation</h4>
             <div class="form-group">
                 <label>sheet a</label>
                 <input type="file" id="FileUpload1" name="FileUpload1" class="form-control" />
@@ -28,12 +24,16 @@
                 <label>sheet e</label>
                 <input type="file" id="FileUpload2" name="FileUpload2" class="form-control" />
             </div>
+        </div>
+        <div class="col-md-4">
+            <h4>Basic Allocation</h4>
+
             <div class="form-group">
                 <label>sheet h</label>
                 <input type="file" id="FileUpload3" name="FileUpload3" class="form-control" />
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <h4>CONC Allocation</h4>
             <div class="form-group">
                 <label>sheet i</label>

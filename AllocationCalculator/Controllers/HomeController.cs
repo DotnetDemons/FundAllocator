@@ -16,16 +16,18 @@ namespace AllocationCalculator.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly DataRepository repository;
+        private readonly CommonDataRepositroy repository;
         private readonly DataCalculationRepository dataCalculationRepository;
         private readonly AllocationRepository basicAllocationRepository;
         private readonly ConcDataRepository concDataRepository;
+        private readonly BasicAllocationDataRepository basicAllocationDataRepository;
         public HomeController()
         {
-            repository = new DataRepository();
+            repository = new CommonDataRepositroy();
             concDataRepository = new ConcDataRepository();
             dataCalculationRepository = new DataCalculationRepository();
             basicAllocationRepository = new AllocationRepository();
+            basicAllocationDataRepository = new BasicAllocationDataRepository();
         }
         public ActionResult Index()
         {
@@ -87,7 +89,7 @@ namespace AllocationCalculator.Controllers
             if (sourcesModel.Count > 0)
             {
                 basicAllocationRepository.MapBasicAllocationAUN(ref sourcesModel, mappingAUNModels);
-                repository.InsertBasicAllocationSource(sourcesModel);
+                basicAllocationDataRepository.InsertBasicAllocationSource(sourcesModel);
                 concDataRepository.InsertConcAllocationSource(sourcesModel);
             }
             if (previousYearsDataModels.Count > 0) repository.InsertPreviousYearsData(previousYearsDataModels);
