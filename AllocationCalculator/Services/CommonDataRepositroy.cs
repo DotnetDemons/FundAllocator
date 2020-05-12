@@ -16,14 +16,14 @@ namespace AllocationCalculator.Services
     {
         //string connection = System.Configuration.ConfigurationManager.ConnectionStrings["FundAllocation"].ConnectionString;
 
-        string connection = "Data Source=UPENDRA-DEVINEN\\UPENDRALOCAL;Initial Catalog=Title1Allocation;User Id = sa; Password = Sairam@123";
+        string connection = "Data Source=UPENDRA-DEVINEN\\UPENDRALOCAL;Initial Catalog=AllocationCalculations;User Id = sa; Password = Sairam@123";
 
         private DataTable BuildSchoolDistrictTable()
         {
             DataTable tbl = new DataTable();
             tbl.Columns.Add(new DataColumn("AUN", typeof(int)));
-            tbl.Columns.Add(new DataColumn("AgencyName", typeof(string)));
-            tbl.Columns.Add(new DataColumn("ID", typeof(int)));
+            tbl.Columns.Add(new DataColumn("Name", typeof(string)));
+            tbl.Columns.Add(new DataColumn("IsCharterSchool", typeof(bool)));
             return tbl;
         }
 
@@ -36,8 +36,8 @@ namespace AllocationCalculator.Services
                 {
                     DataRow dr = dt.NewRow();
                     dr["AUN"] = item.AUN;
-                    dr["AgencyName"] = item.AgencyName;
-                    dr["ID"] = 0;
+                    dr["Name"] = item.AgencyName;
+                    dr["IsCharterSchool"] = 0;
                     dt.Rows.Add(dr);
                 }
             }
@@ -48,16 +48,16 @@ namespace AllocationCalculator.Services
             SqlBulkCopy objbulk = new SqlBulkCopy(con);
 
             //truncate data from table
-            string s = "Truncate Table tblSchoolDistrict";
+            string s = "Truncate Table tblLEA";
             SqlCommand Com = new SqlCommand(s, con);
             Com.ExecuteNonQuery();
 
             //assign Destination table name  
-            objbulk.DestinationTableName = "tblSchoolDistrict";
+            objbulk.DestinationTableName = "tblLEA";
 
             objbulk.ColumnMappings.Add("AUN", "AUN");
-            objbulk.ColumnMappings.Add("AgencyName", "AgencyName");
-            objbulk.ColumnMappings.Add("ID", "ID");
+            objbulk.ColumnMappings.Add("Name", "Name");
+            objbulk.ColumnMappings.Add("IsCharterSchool", "IsCharterSchool");
 
             //insert bulk Records into DataBase.  
             objbulk.WriteToServer(dt);
@@ -143,10 +143,9 @@ namespace AllocationCalculator.Services
         private DataTable BuildBasicAllocationPreviousYearsDataTable()
         {
             DataTable tbl = new DataTable();
-            tbl.Columns.Add(new DataColumn("AUN", typeof(decimal)));
+            tbl.Columns.Add(new DataColumn("AUN", typeof(int)));
             tbl.Columns.Add(new DataColumn("ProgramYear", typeof(int)));
-            tbl.Columns.Add(new DataColumn("StateDeterminedFinalAllocation", typeof(decimal)));
-            tbl.Columns.Add(new DataColumn("ID", typeof(int)));
+            tbl.Columns.Add(new DataColumn("StateDeterminedFinalAllocationAmt", typeof(decimal)));
             return tbl;
         }
 
@@ -158,8 +157,7 @@ namespace AllocationCalculator.Services
                 DataRow dr = dt.NewRow();
                 dr["AUN"] = item.AUN;
                 dr["ProgramYear"] = item.ProgramYear;
-                dr["StateDeterminedFinalAllocation"] = item.StateDeterminedFinalAllocation;
-                dr["ID"] = 0;
+                dr["StateDeterminedFinalAllocationAmt"] = item.StateDeterminedFinalAllocation;
                 dt.Rows.Add(dr);
             }
 
@@ -170,17 +168,16 @@ namespace AllocationCalculator.Services
             SqlBulkCopy objbulk = new SqlBulkCopy(con);
 
             //truncate data from table
-            string s = "Truncate Table tblBasicAllocationPreviousYearsData";
+            string s = "Truncate Table tblBasicAllocationPreviousYear";
             SqlCommand Com = new SqlCommand(s, con);
             Com.ExecuteNonQuery();
 
             //assign Destination table name  
-            objbulk.DestinationTableName = "tblBasicAllocationPreviousYearsData";
+            objbulk.DestinationTableName = "tblBasicAllocationPreviousYear";
 
             objbulk.ColumnMappings.Add("AUN", "AUN");
             objbulk.ColumnMappings.Add("ProgramYear", "ProgramYear");
-            objbulk.ColumnMappings.Add("StateDeterminedFinalAllocation", "StateDeterminedFinalAllocation");
-            objbulk.ColumnMappings.Add("ID", "ID");
+            objbulk.ColumnMappings.Add("StateDeterminedFinalAllocationAmt", "StateDeterminedFinalAllocationAmt");
 
            
             //insert bulk Records into DataBase.  
@@ -195,7 +192,6 @@ namespace AllocationCalculator.Services
             tbl.Columns.Add(new DataColumn("AUN", typeof(int)));
             tbl.Columns.Add(new DataColumn("ProgramYear", typeof(int)));
             tbl.Columns.Add(new DataColumn("StateDeterminedFinalAllocation", typeof(decimal)));
-            tbl.Columns.Add(new DataColumn("ID", typeof(int)));
             return tbl;
         }
 
@@ -208,7 +204,6 @@ namespace AllocationCalculator.Services
                 dr["AUN"] = item.AUN;
                 dr["ProgramYear"] = item.ProgramYear;
                 dr["StateDeterminedFinalAllocation"] = item.StateDeterminedFinalAllocation;
-                dr["ID"] = 0;
                 dt.Rows.Add(dr);
             }
 
@@ -219,17 +214,17 @@ namespace AllocationCalculator.Services
             SqlBulkCopy objbulk = new SqlBulkCopy(con);
 
             //truncate data from table
-            string s = "Truncate Table tblConcAllocationPreviousYearsData";
+            string s = "Truncate Table tblConcAllocationPreviousYear";
             SqlCommand Com = new SqlCommand(s, con);
             Com.ExecuteNonQuery();
 
             //assign Destination table name  
-            objbulk.DestinationTableName = "tblConcAllocationPreviousYearsData";
+            objbulk.DestinationTableName = "tblConcAllocationPreviousYear";
 
             objbulk.ColumnMappings.Add("AUN", "AUN");
             objbulk.ColumnMappings.Add("ProgramYear", "ProgramYear");
             objbulk.ColumnMappings.Add("StateDeterminedFinalAllocation", "StateDeterminedFinalAllocation");
-            objbulk.ColumnMappings.Add("ID", "ID");
+
 
             
             //insert bulk Records into DataBase.  
@@ -285,13 +280,12 @@ namespace AllocationCalculator.Services
         private DataTable BuildConcAllocationEligibilityTable()
         {
             DataTable tbl = new DataTable();
-            tbl.Columns.Add(new DataColumn("AUN", typeof(double)));
+            tbl.Columns.Add(new DataColumn("AUN", typeof(int)));
             tbl.Columns.Add(new DataColumn("LEA", typeof(string)));
-            tbl.Columns.Add(new DataColumn("Year2017", typeof(double)));
-            tbl.Columns.Add(new DataColumn("Year2016", typeof(double)));
-            tbl.Columns.Add(new DataColumn("Year2015", typeof(double)));
-            tbl.Columns.Add(new DataColumn("Year2014", typeof(double)));
-            tbl.Columns.Add(new DataColumn("ID", typeof(int)));
+            tbl.Columns.Add(new DataColumn("PreviousYear1", typeof(double)));
+            tbl.Columns.Add(new DataColumn("PreviousYear2", typeof(double)));
+            tbl.Columns.Add(new DataColumn("PreviousYear3", typeof(double)));
+            tbl.Columns.Add(new DataColumn("PreviousYear4", typeof(double)));
             return tbl;
         }
 
@@ -305,37 +299,36 @@ namespace AllocationCalculator.Services
                 dr["LEA"] = item.C_LEA_;
                 if (item.Year2017 == null)
                 {
-                    dr["Year2017"] = DBNull.Value;
+                    dr["PreviousYear1"] = DBNull.Value;
                 }
                 else
                 {
-                    dr["Year2017"] = item.Year2017;
+                    dr["PreviousYear1"] = item.Year2017;
                 }
                 if (item.Year2016 == null)
                 {
-                    dr["Year2016"] = DBNull.Value;
+                    dr["PreviousYear2"] = DBNull.Value;
                 }
                 else
                 {
-                    dr["Year2016"] = item.Year2016;
+                    dr["PreviousYear2"] = item.Year2016;
                 }
                 if (item.Year2015 == null)
                 {
-                    dr["Year2015"] = DBNull.Value;
+                    dr["PreviousYear3"] = DBNull.Value;
                 }
                 else
                 {
-                    dr["Year2015"] = item.Year2015;
+                    dr["PreviousYear3"] = item.Year2015;
                 }
                 if (item.Year2014 == null)
                 {
-                    dr["Year2014"] = DBNull.Value;
+                    dr["PreviousYear4"] = DBNull.Value;
                 }
                 else
                 {
-                    dr["Year2014"] = item.Year2014;
+                    dr["PreviousYear4"] = item.Year2014;
                 }
-                dr["ID"] = 0;
                 dt.Rows.Add(dr);
             }
 
@@ -354,12 +347,10 @@ namespace AllocationCalculator.Services
 
             objbulk.ColumnMappings.Add("AUN", "AUN");
             objbulk.ColumnMappings.Add("LEA", "LEA");
-            objbulk.ColumnMappings.Add("Year2017", "Year2017");
-            objbulk.ColumnMappings.Add("Year2016", "Year2016");
-            objbulk.ColumnMappings.Add("Year2015", "Year2015");
-            objbulk.ColumnMappings.Add("Year2014", "Year2014");
-            objbulk.ColumnMappings.Add("ID", "ID");
-
+            objbulk.ColumnMappings.Add("PreviousYear1", "PreviousYear1");
+            objbulk.ColumnMappings.Add("PreviousYear2", "PreviousYear2");
+            objbulk.ColumnMappings.Add("PreviousYear3", "PreviousYear3");
+            objbulk.ColumnMappings.Add("PreviousYear4", "PreviousYear4");
 
             //insert bulk Records into DataBase.  
             objbulk.WriteToServer(dt);

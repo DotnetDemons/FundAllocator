@@ -11,5 +11,6 @@ namespace AllocationCalculator.Models
         public string AgencyName { get; set; }
         public int ID { get; set; }
         public Nullable<int> LEAID { get; set; }
+        public Nullable<bool> IsCharterSchool { get; set; }
     }
 }

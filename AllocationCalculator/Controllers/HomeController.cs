@@ -84,7 +84,12 @@ namespace AllocationCalculator.Controllers
             if (districtsModel.Count > 0)
             {
                 basicAllocationRepository.MapSchoolDistrictsAUN(ref districtsModel, mappingAUNModels);
+                var charterSchools = schooltoSdsModel.Select(x => new SchoolDistrictsModel { AUN = x.CSAUN, AgencyName = x.CSAUNName, IsCharterSchool = true })
+                   .GroupBy(p => new { p.AUN, p.AgencyName })
+                   .Select(g => g.First()).ToList();
+                districtsModel.Concat(charterSchools);
                 repository.InsertSchoolDistricts(districtsModel);
+                repository.InsertMappingData(schooltoSdsModel);
             }
             if (sourcesModel.Count > 0)
             {
@@ -96,14 +101,7 @@ namespace AllocationCalculator.Controllers
             if (concPreviousYearsDataModels.Count > 0) repository.InsertConcPreviousYearsData(concPreviousYearsDataModels);
             if (eligibilityModels.Count > 0) repository.InsertConcEligibilityData(eligibilityModels);
             
-            if (schooltoSdsModel.Count > 0)
-            {
-                var charterSchools = schooltoSdsModel.Select(x => new CharterSchoolsModel { CSAUN = x.CSAUN, CharterSchoolName = x.CSAUNName })
-                    .GroupBy(p => new { p.CSAUN, p.CharterSchoolName })
-                    .Select(g => g.First()).ToList();
-                repository.InsertCharterSchools(charterSchools);
-                repository.InsertMappingData(schooltoSdsModel);
-            }
+           
             ViewBag.AlertMessage = "Data uploaded successfully, To download report";
 
             return View();

@@ -10,25 +10,30 @@ namespace AllocationCalculator.Services
 {
     public class DataCalculationRepository
     {
-        AllocationCalculationsEntities _db = new AllocationCalculationsEntities();
+
         public List<FinalDataModel> CalculateData(int year = 2018)
         {
-            _db.BasicAllocation(year);
-            _db.SaveChanges();
-            _db.ConcAllocation(year);
+            using (AllocationCalculationsEntities _dbBasic = new AllocationCalculationsEntities())
+            {
+                _dbBasic.BasicAllocation(year);
+            }
 
-            //return (from a in _db.tblBasicAllocationSources
-            //        join b in _db.tblSchoolDistricts on a.AUN equals b.AUN
-            //        join c in _db.tblConcAllocationSources on a.AUN equals c.AUN
-            //        select new FinalDataModel
-            //        {
-            //            AUN = a.AUN,
-            //            AgencyName = b.AgencyName,
-            //            FinalBasicAllocatedAmount = a.FINALAllocationAmount,
-            //            FinalConcAllocatedAmount = c.FINALConcAllocationAmount
-            //        }).ToList();
+            using (AllocationCalculationsEntities _dbConc = new AllocationCalculationsEntities())
+            {
+                _dbConc.ConcAllocation(year);
+            }
 
-            return null;
+            AllocationCalculationsEntities _db = new AllocationCalculationsEntities();
+            return  (from a in _db.tblBasicAllocationSources
+                        join b in _db.tblLEAs on a.AUN equals b.AUN
+                        join c in _db.tblConcAllocationSources on a.AUN equals c.AUN
+                        select new FinalDataModel
+                        {
+                            AUN = a.AUN,
+                            AgencyName = b.Name,
+                            FinalBasicAllocatedAmount = a.FinalBasicAllocationAmt,
+                            FinalConcAllocatedAmount = c.FinalConcAllocationAmount
+                        }).ToList();
         }
     }
 }

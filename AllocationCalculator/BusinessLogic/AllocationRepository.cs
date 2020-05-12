@@ -22,6 +22,7 @@ namespace AllocationCalculator.BusinessLogic
                         {
                             districtModel.LEAID = int.Parse(dt.Rows[i][3].ToString());
                             districtModel.AgencyName = dt.Rows[i][4].ToString();
+                            districtModel.IsCharterSchool = false;
                             districtsModel.Add(districtModel);
                         }
                     }

@@ -13,7 +13,7 @@ namespace AllocationCalculator.Services
         //string connection = System.Configuration.ConfigurationManager.
         //                           ConnectionStrings["FundAllocation"].ConnectionString;
 
-        string connection = "Data Source=UPENDRA-DEVINEN\\UPENDRALOCAL;Initial Catalog=Title1Allocation;User Id = sa; Password = Sairam@123";
+        string connection = "Data Source=UPENDRA-DEVINEN\\UPENDRALOCAL;Initial Catalog=AllocationCalculations;User Id = sa; Password = Sairam@123";
         public void InsertConcAllocationSource(List<AllocationSourcesModel> sourcesModel)
         {
             DataTable concSource = BuildCONCSource();
@@ -61,37 +61,27 @@ namespace AllocationCalculator.Services
                 {
                     dr["PercentageFormula"] = item.PercentageFormula;
                 }
-                dr["FinalBasicAllocation"] = DBNull.Value;
-                dr["CharterSchoolAdjustments"] = DBNull.Value;
-                dr["BAllocationAfterCS"] = DBNull.Value;
+                dr["CharterSchoolAdjustment"] = DBNull.Value;
+                dr["ConcAllocationAfterCS"] = DBNull.Value;
                 dr["HoldHarmlessRate"] = DBNull.Value;
                 dr["HoldHarmlessAmount"] = DBNull.Value;
                 dr["HoldHarmlessCheck"] = DBNull.Value;
                 dr["LEAsAboveHoldHarmless"] = DBNull.Value;
                 dr["AdjustedLEAsAboveHoldHarmless"] = DBNull.Value;
-                dr["AllocationstoAllLEAS"] = DBNull.Value;
-                dr["FINALConcAllocationAmount"] = DBNull.Value;
-                dr["SumBAllocationAfterCS"] = DBNull.Value;
-                dr["sumAdjustedLEAsAboveHoldHarmless"] = DBNull.Value;
-                dr["sumLEAsAboveHoldHarmless"] = DBNull.Value;
-                dr["ID"] = 0;
+                dr["AllocationstoAllLEA"] = DBNull.Value;
+                dr["FinalConcAllocationAmount"] = DBNull.Value;
+                dr["SumConcAllocationAfterCS"] = DBNull.Value;
+                dr["SumAdjustedLEAsAboveHoldHarmless"] = DBNull.Value;
+                dr["SumLEAAboveHoldHarmless"] = DBNull.Value;
                 concSource.Rows.Add(dr);
             }
 
-
             SqlConnection con = new SqlConnection(connection);
-
             con.Open();
-
-            //create object of SqlBulkCopy which help to insert  
             SqlBulkCopy objbulk = new SqlBulkCopy(con);
-
-            //truncate data from table
             string s = "Truncate Table tblConcAllocationSource";
             SqlCommand Com = new SqlCommand(s, con);
             Com.ExecuteNonQuery();
-
-            //assign Destination table name  
             objbulk.DestinationTableName = "tblConcAllocationSource";
 
             objbulk.ColumnMappings.Add("AUN", "AUN");
@@ -100,20 +90,19 @@ namespace AllocationCalculator.Services
             objbulk.ColumnMappings.Add("TotalForumlaCount", "TotalForumlaCount");
             objbulk.ColumnMappings.Add("POP517", "POP517");
             objbulk.ColumnMappings.Add("PercentageFormula", "PercentageFormula");
-            objbulk.ColumnMappings.Add("FinalBasicAllocation", "FinalBasicAllocation");
-            objbulk.ColumnMappings.Add("CharterSchoolAdjustments", "CharterSchoolAdjustments");
-            objbulk.ColumnMappings.Add("BAllocationAfterCS", "BAllocationAfterCS");
+            objbulk.ColumnMappings.Add("CharterSchoolAdjustment", "CharterSchoolAdjustment");
+            objbulk.ColumnMappings.Add("ConcAllocationAfterCS", "ConcAllocationAfterCS");
             objbulk.ColumnMappings.Add("HoldHarmlessRate", "HoldHarmlessRate");
             objbulk.ColumnMappings.Add("HoldHarmlessAmount", "HoldHarmlessAmount");
             objbulk.ColumnMappings.Add("HoldHarmlessCheck", "HoldHarmlessCheck");
             objbulk.ColumnMappings.Add("LEAsAboveHoldHarmless", "LEAsAboveHoldHarmless");
-            objbulk.ColumnMappings.Add("AdjustedLEAsAboveHoldHarmless", "AdjustedLEAsAboveHoldHarmless");
-            objbulk.ColumnMappings.Add("AllocationstoAllLEAS", "AllocationstoAllLEAS");
-            objbulk.ColumnMappings.Add("FINALConcAllocationAmount", "FINALConcAllocationAmount");
-            objbulk.ColumnMappings.Add("SumBAllocationAfterCS", "SumBAllocationAfterCS");
-            objbulk.ColumnMappings.Add("sumAdjustedLEAsAboveHoldHarmless", "sumAdjustedLEAsAboveHoldHarmless");
-            objbulk.ColumnMappings.Add("sumLEAsAboveHoldHarmless", "sumLEAsAboveHoldHarmless");
-            objbulk.ColumnMappings.Add("ID", "ID");
+            objbulk.ColumnMappings.Add("AdjustedLEAAboveHoldHarmless", "AdjustedLEAAboveHoldHarmless");
+            objbulk.ColumnMappings.Add("AllocationstoAllLEA", "AllocationstoAllLEA");
+            objbulk.ColumnMappings.Add("FinalConcAllocationAmount", "FinalConcAllocationAmount");
+            objbulk.ColumnMappings.Add("SumConcAllocationAfterCS", "SumConcAllocationAfterCS");
+            objbulk.ColumnMappings.Add("SumAdjustedLEAsAboveHoldHarmless", "SumAdjustedLEAsAboveHoldHarmless");
+            objbulk.ColumnMappings.Add("SumLEAAboveHoldHarmless", "SumLEAAboveHoldHarmless");
+   
 
             
             //insert bulk Records into DataBase.  
@@ -132,24 +121,23 @@ namespace AllocationCalculator.Services
             tbl.Columns.Add(new DataColumn("POP517", typeof(double)));
             tbl.Columns.Add(new DataColumn("PercentageFormula", typeof(double)));
 
-            tbl.Columns.Add(new DataColumn("FinalBasicAllocation", typeof(decimal)));
-            tbl.Columns.Add(new DataColumn("CharterSchoolAdjustments", typeof(int)));
-            tbl.Columns.Add(new DataColumn("BAllocationAfterCS", typeof(double)));
+            tbl.Columns.Add(new DataColumn("CharterSchoolAdjustment", typeof(int)));
+            tbl.Columns.Add(new DataColumn("ConcAllocationAfterCS", typeof(double)));
 
             tbl.Columns.Add(new DataColumn("HoldHarmlessRate", typeof(int)));
             tbl.Columns.Add(new DataColumn("HoldHarmlessAmount", typeof(decimal)));
             tbl.Columns.Add(new DataColumn("HoldHarmlessCheck", typeof(decimal)));
 
             tbl.Columns.Add(new DataColumn("LEAsAboveHoldHarmless", typeof(double)));
-            tbl.Columns.Add(new DataColumn("AdjustedLEAsAboveHoldHarmless", typeof(double)));
-            tbl.Columns.Add(new DataColumn("AllocationstoAllLEAS", typeof(double)));
+            tbl.Columns.Add(new DataColumn("AdjustedLEAAboveHoldHarmless", typeof(double)));
+            tbl.Columns.Add(new DataColumn("AllocationstoAllLEA", typeof(double)));
 
-            tbl.Columns.Add(new DataColumn("FINALConcAllocationAmount", typeof(double)));
-            tbl.Columns.Add(new DataColumn("SumBAllocationAfterCS", typeof(decimal)));
-            tbl.Columns.Add(new DataColumn("sumAdjustedLEAsAboveHoldHarmless", typeof(decimal)));
+            tbl.Columns.Add(new DataColumn("FinalConcAllocationAmount", typeof(double)));
+            tbl.Columns.Add(new DataColumn("SumConcAllocationAfterCS", typeof(decimal)));
+            tbl.Columns.Add(new DataColumn("SumAdjustedLEAsAboveHoldHarmless", typeof(decimal)));
 
-            tbl.Columns.Add(new DataColumn("sumLEAsAboveHoldHarmless", typeof(decimal)));
-            tbl.Columns.Add(new DataColumn("ID", typeof(int)));
+            tbl.Columns.Add(new DataColumn("SumLEAAboveHoldHarmless", typeof(decimal)));
+
 
             return tbl;
         }
