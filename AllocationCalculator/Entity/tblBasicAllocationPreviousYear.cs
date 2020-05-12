@@ -12,10 +12,12 @@ namespace AllocationCalculator.Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class tblSchoolDistrict
+    public partial class tblBasicAllocationPreviousYear
     {
-        public Nullable<int> AUN { get; set; }
-        public string AgencyName { get; set; }
-        public int ID { get; set; }
+        public int AUN { get; set; }
+        public Nullable<int> ProgramYear { get; set; }
+        public Nullable<decimal> StateDeterminedFinalAllocationAmt { get; set; }
+    
+        public virtual tblLEA tblLEA { get; set; }
     }
 }

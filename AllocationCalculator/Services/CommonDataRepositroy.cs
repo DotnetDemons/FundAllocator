@@ -14,7 +14,9 @@ namespace AllocationCalculator.Services
 {
     public class CommonDataRepositroy
     {
-        string connection = System.Configuration.ConfigurationManager.ConnectionStrings["FundAllocation"].ConnectionString;
+        //string connection = System.Configuration.ConfigurationManager.ConnectionStrings["FundAllocation"].ConnectionString;
+
+        string connection = "Data Source=UPENDRA-DEVINEN\\UPENDRALOCAL;Initial Catalog=Title1Allocation;User Id = sa; Password = Sairam@123";
 
         private DataTable BuildSchoolDistrictTable()
         {
@@ -30,14 +32,18 @@ namespace AllocationCalculator.Services
             DataTable dt = BuildSchoolDistrictTable();
             foreach (var item in districtsModels)
             {
-                DataRow dr = dt.NewRow();
-                dr["AUN"] = item.AUN;
-                dr["AgencyName"] = item.AgencyName;
-                dr["ID"] = 0;
-                dt.Rows.Add(dr);
+                if (item.AgencyName.ToLower() != "undistributed")
+                {
+                    DataRow dr = dt.NewRow();
+                    dr["AUN"] = item.AUN;
+                    dr["AgencyName"] = item.AgencyName;
+                    dr["ID"] = 0;
+                    dt.Rows.Add(dr);
+                }
             }
 
             SqlConnection con = new SqlConnection(connection);
+            con.Open();
             //create object of SqlBulkCopy which help to insert  
             SqlBulkCopy objbulk = new SqlBulkCopy(con);
 
@@ -53,7 +59,6 @@ namespace AllocationCalculator.Services
             objbulk.ColumnMappings.Add("AgencyName", "AgencyName");
             objbulk.ColumnMappings.Add("ID", "ID");
 
-            con.Open();
             //insert bulk Records into DataBase.  
             objbulk.WriteToServer(dt);
             con.Close();
@@ -88,7 +93,7 @@ namespace AllocationCalculator.Services
                 dr["AgencyName"] = item.AgencyName;
                 dr["CSAUN"] = item.CSAUN;
                 dr["CSAUNName"] = item.CSAUNName;
-                dr["NbrEnrolledStuds"] = DBNull.Value;
+                dr["NbrEnrolledStuds"] = item.NbrEnrolledStuds;
                 dr["LowIncomePercentage"] = DBNull.Value;
                 dr["FormulaStudents"] = DBNull.Value;
                 dr["BasicAllocationPerPupilAmt"] = DBNull.Value;
@@ -101,6 +106,9 @@ namespace AllocationCalculator.Services
             }
 
             SqlConnection con = new SqlConnection(connection);
+
+            con.Open();
+
             //create object of SqlBulkCopy which help to insert  
             SqlBulkCopy objbulk = new SqlBulkCopy(con);
 
@@ -124,9 +132,9 @@ namespace AllocationCalculator.Services
             objbulk.ColumnMappings.Add("TargetedAllocationPerPupilAmt", "TargetedAllocationPerPupilAmt");
             objbulk.ColumnMappings.Add("EFIGAllocationPerPupilAmount", "EFIGAllocationPerPupilAmount");
             objbulk.ColumnMappings.Add("TotalSubtracted", "TotalSubtracted");
-            objbulk.ColumnMappings.Add("ID", "ID");
+            objbulk.ColumnMappings.Add("CID", "CID");
 
-            con.Open();
+            
             //insert bulk Records into DataBase.  
             objbulk.WriteToServer(dt);
             con.Close();
@@ -156,6 +164,8 @@ namespace AllocationCalculator.Services
             }
 
             SqlConnection con = new SqlConnection(connection);
+
+            con.Open();
             //create object of SqlBulkCopy which help to insert  
             SqlBulkCopy objbulk = new SqlBulkCopy(con);
 
@@ -172,7 +182,7 @@ namespace AllocationCalculator.Services
             objbulk.ColumnMappings.Add("StateDeterminedFinalAllocation", "StateDeterminedFinalAllocation");
             objbulk.ColumnMappings.Add("ID", "ID");
 
-            con.Open();
+           
             //insert bulk Records into DataBase.  
             objbulk.WriteToServer(dt);
             con.Close();
@@ -203,6 +213,8 @@ namespace AllocationCalculator.Services
             }
 
             SqlConnection con = new SqlConnection(connection);
+
+            con.Open();
             //create object of SqlBulkCopy which help to insert  
             SqlBulkCopy objbulk = new SqlBulkCopy(con);
 
@@ -219,7 +231,7 @@ namespace AllocationCalculator.Services
             objbulk.ColumnMappings.Add("StateDeterminedFinalAllocation", "StateDeterminedFinalAllocation");
             objbulk.ColumnMappings.Add("ID", "ID");
 
-            con.Open();
+            
             //insert bulk Records into DataBase.  
             objbulk.WriteToServer(dt);
             con.Close();
@@ -247,6 +259,8 @@ namespace AllocationCalculator.Services
             }
 
             SqlConnection con = new SqlConnection(connection);
+
+            con.Open();
             //create object of SqlBulkCopy which help to insert  
             SqlBulkCopy objbulk = new SqlBulkCopy(con);
 
@@ -262,7 +276,7 @@ namespace AllocationCalculator.Services
             objbulk.ColumnMappings.Add("CharterSchoolName", "CharterSchoolName");
             objbulk.ColumnMappings.Add("CSID", "CSID");
 
-            con.Open();
+            
             //insert bulk Records into DataBase.  
             objbulk.WriteToServer(dt);
             con.Close();
@@ -272,7 +286,7 @@ namespace AllocationCalculator.Services
         {
             DataTable tbl = new DataTable();
             tbl.Columns.Add(new DataColumn("AUN", typeof(double)));
-            tbl.Columns.Add(new DataColumn("C_LEA_", typeof(string)));
+            tbl.Columns.Add(new DataColumn("LEA", typeof(string)));
             tbl.Columns.Add(new DataColumn("Year2017", typeof(double)));
             tbl.Columns.Add(new DataColumn("Year2016", typeof(double)));
             tbl.Columns.Add(new DataColumn("Year2015", typeof(double)));
@@ -288,7 +302,7 @@ namespace AllocationCalculator.Services
             {
                 DataRow dr = dt.NewRow();
                 dr["AUN"] = item.AUN;
-                dr["C_LEA_"] = item.C_LEA_;
+                dr["LEA"] = item.C_LEA_;
                 if (item.Year2017 == null)
                 {
                     dr["Year2017"] = DBNull.Value;
@@ -326,22 +340,27 @@ namespace AllocationCalculator.Services
             }
 
             SqlConnection con = new SqlConnection(connection);
+            con.Open();
             //create object of SqlBulkCopy which help to insert  
             SqlBulkCopy objbulk = new SqlBulkCopy(con);
 
             //truncate data from table
-            string s = "Truncate Table tblCharterSchool";
+            string s = "Truncate Table tblConcAllocationEligibility";
             SqlCommand Com = new SqlCommand(s, con);
             Com.ExecuteNonQuery();
 
             //assign Destination table name  
-            objbulk.DestinationTableName = "tblCharterSchool";
+            objbulk.DestinationTableName = "tblConcAllocationEligibility";
 
-            objbulk.ColumnMappings.Add("CSAUN", "CSAUN");
-            objbulk.ColumnMappings.Add("CharterSchoolName", "CharterSchoolName");
-            objbulk.ColumnMappings.Add("CSID", "CSID");
+            objbulk.ColumnMappings.Add("AUN", "AUN");
+            objbulk.ColumnMappings.Add("LEA", "LEA");
+            objbulk.ColumnMappings.Add("Year2017", "Year2017");
+            objbulk.ColumnMappings.Add("Year2016", "Year2016");
+            objbulk.ColumnMappings.Add("Year2015", "Year2015");
+            objbulk.ColumnMappings.Add("Year2014", "Year2014");
+            objbulk.ColumnMappings.Add("ID", "ID");
 
-            con.Open();
+
             //insert bulk Records into DataBase.  
             objbulk.WriteToServer(dt);
             con.Close();

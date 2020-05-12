@@ -12,10 +12,12 @@ namespace AllocationCalculator.Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class tblCharterSchool
+    public partial class tblConcAllocationPreviousYear
     {
-        public Nullable<int> CSAUN { get; set; }
-        public string CharterSchoolName { get; set; }
-        public int CSID { get; set; }
+        public int AUN { get; set; }
+        public Nullable<int> ProgramYear { get; set; }
+        public Nullable<decimal> StateDeterminedFinalAllocation { get; set; }
+    
+        public virtual tblLEA tblLEA { get; set; }
     }
 }

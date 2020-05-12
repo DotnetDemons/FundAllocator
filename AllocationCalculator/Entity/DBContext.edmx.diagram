@@ -4,15 +4,18 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="c60c3212f7824f91bf00f8657ac46e94" Name="Diagram1">
-        <EntityTypeShape EntityType="Title1AllocationModel.tblBasicAllocationPreviousYearsData" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Title1AllocationModel.tblBasicAllocationSource" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Title1AllocationModel.tblCharterSchool" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Title1AllocationModel.tblMapCharterSchooltoSD" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Title1AllocationModel.tblSchoolDistrict" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Title1AllocationModel.tblConcAllocationEligibility" Width="1.5" PointX="0.75" PointY="6.75" />
-        <EntityTypeShape EntityType="Title1AllocationModel.tblConcAllocationPreviousYearsData" Width="1.5" PointX="7.75" PointY="3.75" />
-        <EntityTypeShape EntityType="Title1AllocationModel.tblConcAllocationSource" Width="1.5" PointX="7.75" PointY="6.75" />
+      <Diagram DiagramId="3f6cfadc53354882a48ef56b3cb3a0f2" Name="Diagram1">
+        <EntityTypeShape EntityType="AllocationCalculationsModel.tblLEA" Width="1.5" PointX="0.75" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllocationCalculationsModel.tblBasicAllocationPreviousYear" Width="1.5" PointX="3" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllocationCalculationsModel.tblBasicAllocationSource" Width="1.5" PointX="3" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllocationCalculationsModel.tblConcAllocationEligibility" Width="1.5" PointX="3" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllocationCalculationsModel.tblConcAllocationPreviousYear" Width="1.5" PointX="3" PointY="12.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllocationCalculationsModel.tblConcAllocationSource" Width="1.5" PointX="3" PointY="15.375" IsExpanded="true" />
+        <AssociationConnector Association="AllocationCalculationsModel.FK_AUN" ManuallyRouted="false" />
+        <AssociationConnector Association="AllocationCalculationsModel.FK_CONC_AUN" ManuallyRouted="false" />
+        <AssociationConnector Association="AllocationCalculationsModel.FK_Conc_Elig_AUN" ManuallyRouted="false" />
+        <AssociationConnector Association="AllocationCalculationsModel.FK_PrevousYear_Basic_AUN" ManuallyRouted="false" />
+        <AssociationConnector Association="AllocationCalculationsModel.FK_PrevousYear_Conc_AUN" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

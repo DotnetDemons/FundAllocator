@@ -163,28 +163,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DBContext.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Entity\tblBasicAllocationPreviousYearsData.cs">
+    <Compile Include="Entity\tblBasicAllocationPreviousYear.cs">
       <DependentUpon>DBContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\tblBasicAllocationSource.cs">
       <DependentUpon>DBContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entity\tblCharterSchool.cs">
-      <DependentUpon>DBContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="Entity\tblConcAllocationEligibility.cs">
       <DependentUpon>DBContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entity\tblConcAllocationPreviousYearsData.cs">
+    <Compile Include="Entity\tblConcAllocationPreviousYear.cs">
       <DependentUpon>DBContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\tblConcAllocationSource.cs">
       <DependentUpon>DBContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entity\tblMapCharterSchooltoSD.cs">
-      <DependentUpon>DBContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entity\tblSchoolDistrict.cs">
+    <Compile Include="Entity\tblLEA.cs">
       <DependentUpon>DBContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">

@@ -14,12 +14,13 @@ namespace AllocationCalculator.Entity
     
     public partial class tblConcAllocationEligibility
     {
-        public Nullable<double> AUN { get; set; }
-        public string C_LEA_ { get; set; }
-        public Nullable<double> Year2017 { get; set; }
-        public Nullable<double> Year2016 { get; set; }
-        public Nullable<double> Year2015 { get; set; }
-        public Nullable<double> Year2014 { get; set; }
-        public int ID { get; set; }
+        public int AUN { get; set; }
+        public string LEA { get; set; }
+        public Nullable<double> PreviousYear1 { get; set; }
+        public Nullable<double> PreviousYear2 { get; set; }
+        public Nullable<double> PreviousYear3 { get; set; }
+        public Nullable<double> PreviousYear4 { get; set; }
+    
+        public virtual tblLEA tblLEA { get; set; }
     }
 }

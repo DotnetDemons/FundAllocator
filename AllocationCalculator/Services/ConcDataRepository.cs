@@ -10,8 +10,10 @@ namespace AllocationCalculator.Services
 {
     public class ConcDataRepository
     {
-        string connection = System.Configuration.ConfigurationManager.
-                                   ConnectionStrings["FundAllocation"].ConnectionString;
+        //string connection = System.Configuration.ConfigurationManager.
+        //                           ConnectionStrings["FundAllocation"].ConnectionString;
+
+        string connection = "Data Source=UPENDRA-DEVINEN\\UPENDRALOCAL;Initial Catalog=Title1Allocation;User Id = sa; Password = Sairam@123";
         public void InsertConcAllocationSource(List<AllocationSourcesModel> sourcesModel)
         {
             DataTable concSource = BuildCONCSource();
@@ -19,7 +21,14 @@ namespace AllocationCalculator.Services
             {
                 DataRow dr = concSource.NewRow();
                 dr["AUN"] = item.AUN;
-                dr["ProgramYear"] = item.ProgramYear;
+                if (item.ProgramYear == null)
+                {
+                    dr["ProgramYear"] = DBNull.Value;
+                }
+                else
+                {
+                    dr["ProgramYear"] = item.ProgramYear;
+                }
                 if (item.ConcAllocation == null)
                 {
                     dr["ConcAllocation"] = DBNull.Value;
@@ -71,6 +80,9 @@ namespace AllocationCalculator.Services
 
 
             SqlConnection con = new SqlConnection(connection);
+
+            con.Open();
+
             //create object of SqlBulkCopy which help to insert  
             SqlBulkCopy objbulk = new SqlBulkCopy(con);
 
@@ -103,7 +115,7 @@ namespace AllocationCalculator.Services
             objbulk.ColumnMappings.Add("sumLEAsAboveHoldHarmless", "sumLEAsAboveHoldHarmless");
             objbulk.ColumnMappings.Add("ID", "ID");
 
-            con.Open();
+            
             //insert bulk Records into DataBase.  
             objbulk.WriteToServer(concSource);
             con.Close();

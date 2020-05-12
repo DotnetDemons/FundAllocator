@@ -10,7 +10,10 @@ namespace AllocationCalculator.Services
 {
     public class BasicAllocationDataRepository
     {
-        string connection = System.Configuration.ConfigurationManager.ConnectionStrings["FundAllocation"].ConnectionString;
+        //string connection = System.Configuration.ConfigurationManager.ConnectionStrings["FundAllocation"].ConnectionString;
+
+        string connection = "Data Source=UPENDRA-DEVINEN\\UPENDRALOCAL;Initial Catalog=Title1Allocation;User Id = sa; Password = Sairam@123";
+
         public void InsertBasicAllocationSource(List<AllocationSourcesModel> sourcesModel)
         {
             DataTable basicSource = BuildBasicAllocationSource();
@@ -18,7 +21,14 @@ namespace AllocationCalculator.Services
             {
                 DataRow dr = basicSource.NewRow();
                 dr["AUN"] = item.AUN;
-                dr["ProgramYear"] = item.ProgramYear;
+                if (item.ProgramYear == null)
+                {
+                    dr["ProgramYear"] = DBNull.Value;
+                }
+                else
+                {
+                    dr["ProgramYear"] = item.ProgramYear;
+                }
                 if (item.BasicAllocation == null)
                 {
                     dr["BasicAllocation"] = DBNull.Value;
@@ -68,8 +78,12 @@ namespace AllocationCalculator.Services
             }
 
             SqlConnection con = new SqlConnection(connection);
+
+            con.Open();
+
             //create object of SqlBulkCopy which help to insert  
             SqlBulkCopy objbulk = new SqlBulkCopy(con);
+
 
             //truncate data from table
             string s = "Truncate Table tblBasicAllocationSource";
@@ -99,7 +113,7 @@ namespace AllocationCalculator.Services
             objbulk.ColumnMappings.Add("sumLEAsAboveHoldHarmless", "sumLEAsAboveHoldHarmless");
             objbulk.ColumnMappings.Add("ID", "ID");
 
-            con.Open();
+            
             //insert bulk Records into DataBase.  
             objbulk.WriteToServer(basicSource);
             con.Close();

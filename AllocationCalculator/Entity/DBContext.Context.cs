@@ -15,10 +15,10 @@ namespace AllocationCalculator.Entity
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class Title1AllocationEntities : DbContext
+    public partial class AllocationCalculationsEntities : DbContext
     {
-        public Title1AllocationEntities()
-            : base("name=Title1AllocationEntities")
+        public AllocationCalculationsEntities()
+            : base("name=AllocationCalculationsEntities")
         {
         }
     
@@ -27,13 +27,11 @@ namespace AllocationCalculator.Entity
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<tblBasicAllocationPreviousYearsData> tblBasicAllocationPreviousYearsDatas { get; set; }
+        public virtual DbSet<tblLEA> tblLEAs { get; set; }
+        public virtual DbSet<tblBasicAllocationPreviousYear> tblBasicAllocationPreviousYears { get; set; }
         public virtual DbSet<tblBasicAllocationSource> tblBasicAllocationSources { get; set; }
-        public virtual DbSet<tblCharterSchool> tblCharterSchools { get; set; }
-        public virtual DbSet<tblMapCharterSchooltoSD> tblMapCharterSchooltoSDs { get; set; }
-        public virtual DbSet<tblSchoolDistrict> tblSchoolDistricts { get; set; }
         public virtual DbSet<tblConcAllocationEligibility> tblConcAllocationEligibilities { get; set; }
-        public virtual DbSet<tblConcAllocationPreviousYearsData> tblConcAllocationPreviousYearsDatas { get; set; }
+        public virtual DbSet<tblConcAllocationPreviousYear> tblConcAllocationPreviousYears { get; set; }
         public virtual DbSet<tblConcAllocationSource> tblConcAllocationSources { get; set; }
     
         public virtual ObjectResult<Nullable<decimal>> BasicAllocation(Nullable<int> programYear)
