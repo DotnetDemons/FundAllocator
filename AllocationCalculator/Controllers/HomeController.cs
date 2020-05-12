@@ -72,7 +72,7 @@ namespace AllocationCalculator.Controllers
             if (Request.Files["FileUpload5"].ContentLength > 0)
             {
                 DataTable dt = GetDataTable("FileUpload5");
-                basicAllocationRepository.FillConcPreviousYearsData(ref concPreviousYearsDataModels , dt, model.Year);
+                basicAllocationRepository.FillConcPreviousYearsData(ref concPreviousYearsDataModels, dt, model.Year);
             }
             if (Request.Files["FileUpload6"].ContentLength > 0)
             {
@@ -84,10 +84,15 @@ namespace AllocationCalculator.Controllers
             if (districtsModel.Count > 0)
             {
                 basicAllocationRepository.MapSchoolDistrictsAUN(ref districtsModel, mappingAUNModels);
-                var charterSchools = schooltoSdsModel.Select(x => new SchoolDistrictsModel { AUN = x.CSAUN, AgencyName = x.CSAUNName, IsCharterSchool = true })
+                var charterSchools = schooltoSdsModel.Select(x => new SchoolDistrictsModel { AUN = x.CSAUN, AgencyName = x.CSAUNName })
                    .GroupBy(p => new { p.AUN, p.AgencyName })
                    .Select(g => g.First()).ToList();
-                districtsModel.Concat(charterSchools);
+                //districtsModel.Concat(charterSchools);
+                foreach (var item in charterSchools)
+                {
+                    item.IsCharterSchool = true;
+                    districtsModel.Add(item);
+                }
                 repository.InsertSchoolDistricts(districtsModel);
                 repository.InsertMappingData(schooltoSdsModel);
             }
@@ -100,8 +105,8 @@ namespace AllocationCalculator.Controllers
             if (previousYearsDataModels.Count > 0) repository.InsertPreviousYearsData(previousYearsDataModels);
             if (concPreviousYearsDataModels.Count > 0) repository.InsertConcPreviousYearsData(concPreviousYearsDataModels);
             if (eligibilityModels.Count > 0) repository.InsertConcEligibilityData(eligibilityModels);
-            
-           
+
+
             ViewBag.AlertMessage = "Data uploaded successfully, To download report";
 
             return View();
@@ -151,7 +156,7 @@ namespace AllocationCalculator.Controllers
             }
         }
 
- 
+
 
     }
 }

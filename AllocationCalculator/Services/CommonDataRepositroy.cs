@@ -37,7 +37,7 @@ namespace AllocationCalculator.Services
                     DataRow dr = dt.NewRow();
                     dr["AUN"] = item.AUN;
                     dr["Name"] = item.AgencyName;
-                    dr["IsCharterSchool"] = 0;
+                    dr["IsCharterSchool"] = item.IsCharterSchool;
                     dt.Rows.Add(dr);
                 }
             }
@@ -48,7 +48,38 @@ namespace AllocationCalculator.Services
             SqlBulkCopy objbulk = new SqlBulkCopy(con);
 
             //truncate data from table
-            string s = "Truncate Table tblLEA";
+            string maptable = "Truncate Table tblMapCharterSchooltoSchoolDistrict";
+            SqlCommand mapCom = new SqlCommand(maptable, con);
+            mapCom.ExecuteNonQuery();
+
+            //truncate data from table
+            string basicSource = "Truncate Table tblBasicAllocationSource";
+            SqlCommand BasicSourceCom = new SqlCommand(basicSource, con);
+            BasicSourceCom.ExecuteNonQuery();
+
+            //truncate data from table
+            string concSource = "Truncate Table tblConcAllocationSource";
+            SqlCommand ConcSourceCom = new SqlCommand(concSource, con);
+            ConcSourceCom.ExecuteNonQuery();
+
+            //truncate data from table
+            string prevTable = "Truncate Table tblBasicAllocationPreviousYear";
+            SqlCommand PrevCom = new SqlCommand(prevTable, con);
+            PrevCom.ExecuteNonQuery();
+
+            //truncate data from table
+            string concPrev = "Truncate Table tblConcAllocationPreviousYear";
+            SqlCommand ConcPrevCom = new SqlCommand(concPrev, con);
+            ConcPrevCom.ExecuteNonQuery();
+
+            //truncate data from table
+            string concElig = "Truncate Table tblConcAllocationEligibility";
+            SqlCommand ConcEligCom = new SqlCommand(concElig, con);
+            ConcEligCom.ExecuteNonQuery();
+
+
+            //truncate data from table
+            string s = "Delete tblLEA";
             SqlCommand Com = new SqlCommand(s, con);
             Com.ExecuteNonQuery();
 
@@ -67,19 +98,16 @@ namespace AllocationCalculator.Services
         private DataTable BuildMapCharterSchooltoSDTable()
         {
             DataTable tbl = new DataTable();
-            tbl.Columns.Add(new DataColumn("AUN", typeof(int)));
-            tbl.Columns.Add(new DataColumn("AgencyName", typeof(string)));
-            tbl.Columns.Add(new DataColumn("CSAUN", typeof(int)));
-            tbl.Columns.Add(new DataColumn("CSAUNName", typeof(string)));
-            tbl.Columns.Add(new DataColumn("NbrEnrolledStuds", typeof(double)));
+            tbl.Columns.Add(new DataColumn("Charter_AUN", typeof(int)));
+            tbl.Columns.Add(new DataColumn("LEA_AUN", typeof(int)));
+            tbl.Columns.Add(new DataColumn("NbrEnrolledStudents", typeof(double)));
             tbl.Columns.Add(new DataColumn("LowIncomePercentage", typeof(double)));
             tbl.Columns.Add(new DataColumn("FormulaStudents", typeof(double)));
             tbl.Columns.Add(new DataColumn("BasicAllocationPerPupilAmt", typeof(double)));
             tbl.Columns.Add(new DataColumn("ConcAllocationPerPupilAmt", typeof(double)));
             tbl.Columns.Add(new DataColumn("TargetedAllocationPerPupilAmt", typeof(double)));
-            tbl.Columns.Add(new DataColumn("EFIGAllocationPerPupilAmount", typeof(double)));
+            tbl.Columns.Add(new DataColumn("EFIGAllocationPerPupilAmt", typeof(double)));
             tbl.Columns.Add(new DataColumn("TotalSubtracted", typeof(double)));
-            tbl.Columns.Add(new DataColumn("CID", typeof(int)));
             return tbl;
         }
 
@@ -89,19 +117,16 @@ namespace AllocationCalculator.Services
             foreach (var item in mapCharterModels)
             {
                 DataRow dr = dt.NewRow();
-                dr["AUN"] = item.AUN;
-                dr["AgencyName"] = item.AgencyName;
-                dr["CSAUN"] = item.CSAUN;
-                dr["CSAUNName"] = item.CSAUNName;
-                dr["NbrEnrolledStuds"] = item.NbrEnrolledStuds;
+                dr["Charter_AUN"] = item.CSAUN;
+                dr["LEA_AUN"] = item.AUN;
+                dr["NbrEnrolledStudents"] = item.NbrEnrolledStuds;
                 dr["LowIncomePercentage"] = DBNull.Value;
                 dr["FormulaStudents"] = DBNull.Value;
                 dr["BasicAllocationPerPupilAmt"] = DBNull.Value;
                 dr["ConcAllocationPerPupilAmt"] = DBNull.Value;
                 dr["TargetedAllocationPerPupilAmt"] = DBNull.Value;
-                dr["EFIGAllocationPerPupilAmount"] = DBNull.Value;
+                dr["EFIGAllocationPerPupilAmt"] = DBNull.Value;
                 dr["TotalSubtracted"] = DBNull.Value;
-                dr["CID"] = 0;
                 dt.Rows.Add(dr);
             }
 
@@ -112,29 +137,23 @@ namespace AllocationCalculator.Services
             //create object of SqlBulkCopy which help to insert  
             SqlBulkCopy objbulk = new SqlBulkCopy(con);
 
-            //truncate data from table
-            string s = "Truncate Table tblMapCharterSchooltoSD";
-            SqlCommand Com = new SqlCommand(s, con);
-            Com.ExecuteNonQuery();
+
 
             //assign Destination table name  
-            objbulk.DestinationTableName = "tblMapCharterSchooltoSD";
+            objbulk.DestinationTableName = "tblMapCharterSchooltoSchoolDistrict";
 
-            objbulk.ColumnMappings.Add("AUN", "AUN");
-            objbulk.ColumnMappings.Add("AgencyName", "AgencyName");
-            objbulk.ColumnMappings.Add("CSAUN", "CSAUN");
-            objbulk.ColumnMappings.Add("CSAUNName", "CSAUNName");
-            objbulk.ColumnMappings.Add("NbrEnrolledStuds", "NbrEnrolledStuds");
+            objbulk.ColumnMappings.Add("Charter_AUN", "Charter_AUN");
+            objbulk.ColumnMappings.Add("LEA_AUN", "LEA_AUN");
+            objbulk.ColumnMappings.Add("NbrEnrolledStudents", "NbrEnrolledStudents");
             objbulk.ColumnMappings.Add("LowIncomePercentage", "LowIncomePercentage");
             objbulk.ColumnMappings.Add("FormulaStudents", "FormulaStudents");
             objbulk.ColumnMappings.Add("BasicAllocationPerPupilAmt", "BasicAllocationPerPupilAmt");
             objbulk.ColumnMappings.Add("ConcAllocationPerPupilAmt", "ConcAllocationPerPupilAmt");
             objbulk.ColumnMappings.Add("TargetedAllocationPerPupilAmt", "TargetedAllocationPerPupilAmt");
-            objbulk.ColumnMappings.Add("EFIGAllocationPerPupilAmount", "EFIGAllocationPerPupilAmount");
+            objbulk.ColumnMappings.Add("EFIGAllocationPerPupilAmt", "EFIGAllocationPerPupilAmt");
             objbulk.ColumnMappings.Add("TotalSubtracted", "TotalSubtracted");
-            objbulk.ColumnMappings.Add("CID", "CID");
 
-            
+
             //insert bulk Records into DataBase.  
             objbulk.WriteToServer(dt);
             con.Close();
@@ -167,10 +186,7 @@ namespace AllocationCalculator.Services
             //create object of SqlBulkCopy which help to insert  
             SqlBulkCopy objbulk = new SqlBulkCopy(con);
 
-            //truncate data from table
-            string s = "Truncate Table tblBasicAllocationPreviousYear";
-            SqlCommand Com = new SqlCommand(s, con);
-            Com.ExecuteNonQuery();
+
 
             //assign Destination table name  
             objbulk.DestinationTableName = "tblBasicAllocationPreviousYear";
@@ -179,7 +195,7 @@ namespace AllocationCalculator.Services
             objbulk.ColumnMappings.Add("ProgramYear", "ProgramYear");
             objbulk.ColumnMappings.Add("StateDeterminedFinalAllocationAmt", "StateDeterminedFinalAllocationAmt");
 
-           
+
             //insert bulk Records into DataBase.  
             objbulk.WriteToServer(dt);
             con.Close();
@@ -213,10 +229,6 @@ namespace AllocationCalculator.Services
             //create object of SqlBulkCopy which help to insert  
             SqlBulkCopy objbulk = new SqlBulkCopy(con);
 
-            //truncate data from table
-            string s = "Truncate Table tblConcAllocationPreviousYear";
-            SqlCommand Com = new SqlCommand(s, con);
-            Com.ExecuteNonQuery();
 
             //assign Destination table name  
             objbulk.DestinationTableName = "tblConcAllocationPreviousYear";
@@ -226,7 +238,7 @@ namespace AllocationCalculator.Services
             objbulk.ColumnMappings.Add("StateDeterminedFinalAllocation", "StateDeterminedFinalAllocation");
 
 
-            
+
             //insert bulk Records into DataBase.  
             objbulk.WriteToServer(dt);
             con.Close();
@@ -241,41 +253,41 @@ namespace AllocationCalculator.Services
             return tbl;
         }
 
-        public void InsertCharterSchools(List<CharterSchoolsModel> schoolsModels)
-        {
-            DataTable dt = BuildCharterSchoolTable();
-            foreach (var item in schoolsModels)
-            {
-                DataRow dr = dt.NewRow();
-                dr["CSAUN"] = item.CSAUN;
-                dr["CharterSchoolName"] = item.CharterSchoolName;
-                dr["CSID"] = 0;
-                dt.Rows.Add(dr);
-            }
+        //public void InsertCharterSchools(List<CharterSchoolsModel> schoolsModels)
+        //{
+        //    DataTable dt = BuildCharterSchoolTable();
+        //    foreach (var item in schoolsModels)
+        //    {
+        //        DataRow dr = dt.NewRow();
+        //        dr["CSAUN"] = item.CSAUN;
+        //        dr["CharterSchoolName"] = item.CharterSchoolName;
+        //        dr["CSID"] = 0;
+        //        dt.Rows.Add(dr);
+        //    }
 
-            SqlConnection con = new SqlConnection(connection);
+        //    SqlConnection con = new SqlConnection(connection);
 
-            con.Open();
-            //create object of SqlBulkCopy which help to insert  
-            SqlBulkCopy objbulk = new SqlBulkCopy(con);
+        //    con.Open();
+        //    //create object of SqlBulkCopy which help to insert  
+        //    SqlBulkCopy objbulk = new SqlBulkCopy(con);
 
-            //truncate data from table
-            string s = "Truncate Table tblCharterSchool";
-            SqlCommand Com = new SqlCommand(s, con);
-            Com.ExecuteNonQuery();
+        //    //truncate data from table
+        //    string s = "Truncate Table tblCharterSchool";
+        //    SqlCommand Com = new SqlCommand(s, con);
+        //    Com.ExecuteNonQuery();
 
-            //assign Destination table name  
-            objbulk.DestinationTableName = "tblCharterSchool";
+        //    //assign Destination table name  
+        //    objbulk.DestinationTableName = "tblCharterSchool";
 
-            objbulk.ColumnMappings.Add("CSAUN", "CSAUN");
-            objbulk.ColumnMappings.Add("CharterSchoolName", "CharterSchoolName");
-            objbulk.ColumnMappings.Add("CSID", "CSID");
+        //    objbulk.ColumnMappings.Add("CSAUN", "CSAUN");
+        //    objbulk.ColumnMappings.Add("CharterSchoolName", "CharterSchoolName");
+        //    objbulk.ColumnMappings.Add("CSID", "CSID");
 
-            
-            //insert bulk Records into DataBase.  
-            objbulk.WriteToServer(dt);
-            con.Close();
-        }
+
+        //    //insert bulk Records into DataBase.  
+        //    objbulk.WriteToServer(dt);
+        //    con.Close();
+        //}
 
         private DataTable BuildConcAllocationEligibilityTable()
         {
@@ -337,10 +349,7 @@ namespace AllocationCalculator.Services
             //create object of SqlBulkCopy which help to insert  
             SqlBulkCopy objbulk = new SqlBulkCopy(con);
 
-            //truncate data from table
-            string s = "Truncate Table tblConcAllocationEligibility";
-            SqlCommand Com = new SqlCommand(s, con);
-            Com.ExecuteNonQuery();
+
 
             //assign Destination table name  
             objbulk.DestinationTableName = "tblConcAllocationEligibility";

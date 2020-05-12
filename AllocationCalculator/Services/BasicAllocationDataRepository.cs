@@ -85,10 +85,7 @@ namespace AllocationCalculator.Services
             SqlBulkCopy objbulk = new SqlBulkCopy(con);
 
 
-            //truncate data from table
-            string s = "Truncate Table tblBasicAllocationSource";
-            SqlCommand Com = new SqlCommand(s, con);
-            Com.ExecuteNonQuery();
+          
 
             //assign Destination table name  
             objbulk.DestinationTableName = "tblBasicAllocationSource";

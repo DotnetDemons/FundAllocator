@@ -39,11 +39,11 @@ namespace AllocationCalculator.Services
                 }
                 if (item.TotalForumlaCount == null)
                 {
-                    dr["TotalForumlaCount"] = DBNull.Value;
+                    dr["TotalFormulaCount"] = DBNull.Value;
                 }
                 else
                 {
-                    dr["TotalForumlaCount"] = item.TotalForumlaCount;
+                    dr["TotalFormulaCount"] = item.TotalForumlaCount;
                 }
                 if (item.POP517 == null)
                 {
@@ -67,7 +67,7 @@ namespace AllocationCalculator.Services
                 dr["HoldHarmlessAmount"] = DBNull.Value;
                 dr["HoldHarmlessCheck"] = DBNull.Value;
                 dr["LEAsAboveHoldHarmless"] = DBNull.Value;
-                dr["AdjustedLEAsAboveHoldHarmless"] = DBNull.Value;
+                dr["AdjustedLEAAboveHoldHarmless"] = DBNull.Value;
                 dr["AllocationstoAllLEA"] = DBNull.Value;
                 dr["FinalConcAllocationAmount"] = DBNull.Value;
                 dr["SumConcAllocationAfterCS"] = DBNull.Value;
@@ -79,15 +79,13 @@ namespace AllocationCalculator.Services
             SqlConnection con = new SqlConnection(connection);
             con.Open();
             SqlBulkCopy objbulk = new SqlBulkCopy(con);
-            string s = "Truncate Table tblConcAllocationSource";
-            SqlCommand Com = new SqlCommand(s, con);
-            Com.ExecuteNonQuery();
+            
             objbulk.DestinationTableName = "tblConcAllocationSource";
 
             objbulk.ColumnMappings.Add("AUN", "AUN");
             objbulk.ColumnMappings.Add("ProgramYear", "ProgramYear");
             objbulk.ColumnMappings.Add("ConcAllocation", "ConcAllocation");
-            objbulk.ColumnMappings.Add("TotalForumlaCount", "TotalForumlaCount");
+            objbulk.ColumnMappings.Add("TotalFormulaCount", "TotalFormulaCount");
             objbulk.ColumnMappings.Add("POP517", "POP517");
             objbulk.ColumnMappings.Add("PercentageFormula", "PercentageFormula");
             objbulk.ColumnMappings.Add("CharterSchoolAdjustment", "CharterSchoolAdjustment");
@@ -117,7 +115,7 @@ namespace AllocationCalculator.Services
             tbl.Columns.Add(new DataColumn("ProgramYear", typeof(int)));
             tbl.Columns.Add(new DataColumn("ConcAllocation", typeof(decimal)));
 
-            tbl.Columns.Add(new DataColumn("TotalForumlaCount", typeof(double)));
+            tbl.Columns.Add(new DataColumn("TotalFormulaCount", typeof(double)));
             tbl.Columns.Add(new DataColumn("POP517", typeof(double)));
             tbl.Columns.Add(new DataColumn("PercentageFormula", typeof(double)));
 

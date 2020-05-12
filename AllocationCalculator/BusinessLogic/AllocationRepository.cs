@@ -178,6 +178,7 @@ namespace AllocationCalculator.BusinessLogic
                         if (dt.Rows[i][0].ToString() != "" && dt.Rows[i][1].ToString() != "")
                         {
                             eligibilityModel.AUN = int.Parse(dt.Rows[i][0].ToString());
+                            eligibilityModel.C_LEA_ = dt.Rows[i][1].ToString();
                             eligibilityModel.Year2014 = dt.Rows[i][16].ToString() == string.Empty ? 0 : float.Parse(dt.Rows[i][16].ToString().Trim('%'));
                             eligibilityModel.Year2015 = dt.Rows[i][13].ToString() == string.Empty ? 0 : float.Parse(dt.Rows[i][13].ToString().Trim('%'));
                             eligibilityModel.Year2016 = dt.Rows[i][10].ToString() == string.Empty ? 0 : float.Parse(dt.Rows[i][10].ToString().Trim('%'));
